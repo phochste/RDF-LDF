@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.02  2015-02-19 20:24:24 CET
   - adding required modules in cpanfile
 
 0.01  2015-02-19 10:48:34 CET
