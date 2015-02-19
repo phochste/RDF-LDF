@@ -6,7 +6,8 @@ use feature qw(state);
 use utf8;
 
 use Moo;
-use RDF::aREF;
+use Data::Util qw(:check);
+use Data::Compare;
 use RDF::NS;
 use RDF::Trine;
 use RDF::Query;
@@ -245,7 +246,7 @@ sub _find_best_pattern {
 
     return (undef,$triples) unless defined $best_pattern;
 
-    my @rest_triples = map { is_same($_,$best_pattern) ? () : ($_) } @$triples;
+    my @rest_triples = map { Data::Compare::Compare($_,$best_pattern) ? () : ($_) } @$triples;
 
     return ($best_pattern, \@rest_triples);
 }
