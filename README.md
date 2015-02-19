@@ -26,7 +26,11 @@ EOF
 # DESCRIPTION
 
 The RDF::LDF  module is a basic implementation of a Linked Data Fragment client. For details see:
-<http://linkeddatafragments.org/>
+<http://linkeddatafragments.org/>.
+
+# STATUS
+
+THIS IS ALPHA CODE! The implementation is unreliable and the interface is subject to change.
 
 # CONFIGURATION
 

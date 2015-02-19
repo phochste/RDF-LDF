@@ -36,6 +36,17 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/phochste/RDF-LDF/issues"
+      },
+      "homepage" : "https://github.com/phochste/RDF-LDF",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/phochste/RDF-LDF.git",
+         "web" : "https://github.com/phochste/RDF-LDF"
+      }
+   },
    "version" : "0.01"
 }
 
