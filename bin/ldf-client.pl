@@ -20,8 +20,6 @@ $sparql = read_file($sparql) if -r $sparql;
 my $client = RDF::LDF->new(url => $url);
 my $it = $client->get_sparql($sparql);
 
-binmode(STDOUT,":encoding(UTF-8)");
-
 while (my $binding = $it->()) {
 	print encode_json($binding), "\n";
 }

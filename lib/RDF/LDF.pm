@@ -299,13 +299,16 @@ sub _parse_triple_pattern {
     my ($subject,$predicate,$object);
 
     $subject   = $triple->subject->as_string;
-    $subject   =~ s{<(.*)>}{$1};
+    $subject   =~ s{^<(.*)>$}{$1};
+    $subject   =~ s{^\((.*)\)$}{?$1};
 
     $predicate = $triple->predicate->as_string;
-    $predicate =~ s{<(.*)>}{$1};
+    $predicate =~ s{^<(.*)>$}{$1};
+    $predicate =~ s{^\((.*)\)$}{?$1};
 
     $object    = $triple->object->as_string;
-    $object    =~ s{<(.*)>}{$1};
+    $object    =~ s{^<(.*)>$}{$1};
+    $object    =~ s{^\((.*)\)$}{?$1};
 
     return {
         subject   => $subject ,
