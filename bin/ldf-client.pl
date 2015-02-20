@@ -10,19 +10,18 @@ my $sparql = shift;
 
 unless (defined $url) {
 	print STDERR <<EOF;
-usage: $0 [options] url sparql
+usage: $0 url sparql
 EOF
 	exit(1);
 }
 
-my $client = RDF::LDF->new(url => $url);
-
-my $it = $client->get_sparql($sparql);
-
 $sparql = read_file($sparql) if -r $sparql;
+
+my $client = RDF::LDF->new(url => $url);
+my $it = $client->get_sparql($sparql);
 
 binmode(STDOUT,":encoding(UTF-8)");
 
 while (my $binding = $it->()) {
-	print encode_json($binding);
+	print encode_json($binding), "\n";
 }
