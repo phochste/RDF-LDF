@@ -7,7 +7,6 @@ on 'test', sub {
   requires 'Test::Pod', 0;
 };
 
-
 requires 'Cache::LRU', '0.04';
 requires 'Clone', '0.38';
 requires 'Data::Compare', '1.25';
