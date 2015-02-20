@@ -201,7 +201,7 @@ sub _apply_binding {
     return \@new;
 }
 
-# Create a pattern which binds optiomally to the graph pattern
+# Create a pattern which binds to the graph pattern
 #
 # Usage:
 #
