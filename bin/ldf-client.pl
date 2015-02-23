@@ -15,7 +15,7 @@ use JSON;
 
 my ($subject,$predicate,$object);
 
-GetOptions("subject=s" => \$subject , "predicate=s" => \$predicate , "object" => \$object);
+GetOptions("subject=s" => \$subject , "predicate=s" => \$predicate , "object=s" => \$object);
 
 my $url    = shift;
 my $sparql = shift;
@@ -77,6 +77,11 @@ sub process_sparql {
 	my $model =  RDF::Trine::Model->new($store);
 
 	my $rdf_query = RDF::Query->new( $sparql );
+
+	unless ($rdf_query) {
+		print STDERR "failed to parse:\n$sparql";
+		exit(2);
+	}
 
 	my $iter = $rdf_query->execute($model);
 

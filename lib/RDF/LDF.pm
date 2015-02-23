@@ -396,6 +396,24 @@ sub get_statements {
         $object    = $triple[0]->{object};
     }
 
+    if (is_invocant($subject) && $subject->isa('RDF::Trine::Node')) {
+        $subject = $subject->as_string;
+        $subject   =~ s{^<(.*)>$}{$1};
+        $subject   =~ s{^\((.*)\)$}{?$1};
+    }
+
+    if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node')) {
+        $predicate = $predicate->as_string;
+        $predicate   =~ s{^<(.*)>$}{$1};
+        $predicate   =~ s{^\((.*)\)$}{?$1};
+    }
+
+    if (is_invocant($object) && $object->isa('RDF::Trine::Node')) {
+        $object = $object->as_string;
+        $object   =~ s{^<(.*)>$}{$1};
+        $object   =~ s{^\((.*)\)$}{?$1};
+    }
+
     my $pattern = $self->query_pattern;
 
     return undef unless defined $pattern;
