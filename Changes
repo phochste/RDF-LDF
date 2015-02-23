@@ -1,7 +1,10 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
-
+  - adding RDF::Trine::Store support
+  - adding a ldf-client.pl command line client
+  - provide example sparql queries
+  
 0.02  2015-02-19 20:24:24 CET
   - adding required modules in cpanfile
 
