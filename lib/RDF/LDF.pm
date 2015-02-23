@@ -71,28 +71,46 @@ sub is_fragment_server {
 }
 
 # Public method
-sub get_sparql {
-    my ($self,$sparql) = @_;
+# Optimized method to find all bindings mayching a pattern
+# See:
+# Verborgh, Ruden, et al. Querying Datasets on the Web with High Availability. ISWC2014
+# http://linkeddatafragments.org/publications/iswc2014.pdf
+sub get_pattern {
+    my ($self,$bgp,$context,%args) = @_;
 
-    $self->log->debug("parsing $sparql");
-    my $query = RDF::Query->new($sparql);
+    my (@triples)   = ($bgp->isa('RDF::Trine::Statement') or $bgp->isa('RDF::Query::Algebra::Filter'))
+                    ? $bgp
+                    : $bgp->triples;
 
-    unless (defined $query) {
-        $self->log->error("failed to parse $sparql");
-        return undef;
+    unless (@triples) {
+        die "can't execute get_pattern for an empty pattern";
     }
 
-    my $bgps = $self->_parse_bgp($query->pattern);
+    my @vars = $bgp->referenced_variables;
 
-    unless (is_array_ref($bgps)) {
-        $self->log->error("can't parse bgp for sparql");
-        return undef;
-    }
+    my @bgps = map { $self->_parse_triple_pattern($_)} @triples;
+    
+    my $sub = sub {
+        state $it = $self->_find_variable_bindings(\@bgps);
+        my $b = $it->();
 
-    $self->find_variable_bindings($bgps);
+        return undef unless $b;
+
+        my $binding = RDF::Trine::VariableBindings->new({});
+
+        for my $key (keys %$b) {
+            my $val = $b->{$key};
+            $key =~ s{^\?}{};
+            $binding->set($key => $val);
+        }
+
+        $binding;
+    };
+
+    RDF::Trine::Iterator::Bindings->new($sub,\@vars);
 }
 
-sub find_variable_bindings {
+sub _find_variable_bindings {
     my $self     = shift;
     my $bgps     = shift;
     my $bindings = shift // {};
@@ -107,7 +125,7 @@ sub find_variable_bindings {
         while (!defined($ret = $results->())) {
             unless (defined $it) {
                 # Find the an binding iterator for the best pattern from $bgpgs
-                ($it,$bgps) = $self->_find_variable_bindings($bgps);
+                ($it,$bgps) = $self->_find_variable_bindings_($bgps);
 
                 return undef unless $it;
             }
@@ -124,7 +142,7 @@ sub find_variable_bindings {
             # Apply all the bindings to the rest of the bgps;
             my $bgps_prime = $self->_apply_binding($this_binding,$bgps);
 
-            $results = $self->find_variable_bindings($bgps_prime,$bindings);
+            $results = $self->_find_variable_bindings($bgps_prime,$bindings);
         }
         
         $ret;
@@ -144,7 +162,7 @@ sub find_variable_bindings {
 #              patterns are provided or we get zero results
 #              
 #  $rest     - An array ref of patterns not containing the best pattern
-sub _find_variable_bindings {
+sub _find_variable_bindings_ {
     my ($self,$bgps) = @_;
 
     return (undef, undef) unless is_array_ref($bgps) && @$bgps > 0;
@@ -173,9 +191,7 @@ sub _find_variable_bindings {
 
         for (keys %var_map) {
             my $method   = $var_map{$_};
-            my $value    = $triple->$method->as_string;
-            $value =~ s{^<(.*)>$}{$1};
-            $var_map{$_} = $value;
+            $var_map{$_} = $triple->$method;
         }
 
         return {%var_map};
@@ -195,7 +211,11 @@ sub _apply_binding {
     for my $pattern (@$copy) {
         for (qw(subject predicate object)) {
             my $val = $pattern->{$_};
-            $pattern->{$_} = $binding->{$val} if defined($val) && $binding->{$val};
+            if (defined($val) && $binding->{$val}) {
+                my $str_val = $binding->{$val}->as_string;
+                $str_val =~ s{^<(.*)>$}{$1};
+                $pattern->{$_} = $str_val
+            }
         }
         push @new, $pattern;
     }
@@ -606,7 +626,7 @@ RDF::LDF - Linked Data Fragments client
 
 =head1 SYNOPSIS
 
-    use RDF::LDF ;
+    use RDF::LDF;
 
     my $client = RDF::LDF ->new(url => 'http://fragments.dbpedia.org/2014/en');
 
@@ -615,15 +635,6 @@ RDF::LDF - Linked Data Fragments client
     while (my $statement = $iterator->()) {
         # $model is a RDF::Trine::Statement
     } 
-
-    my $iterator = $client->get_sparql(<<EOF);
-    PREFIX dbpedia: <http://dbpedia.org/resource/>
-    SELECT * WHERE { dbpedia:Arthur_Schopenhauer ?predicate ?object . }
-    EOF
-
-    while (my $binding = $iterator->()) {
-        # $binding is a hashref of all the bindings in the SPARQL
-    }
 
 =head1 DESCRIPTION
 
@@ -652,30 +663,9 @@ URL to retrieve RDF from.
 
 Return an iterator for every RDF::Trine::Statement served by the LDF server.
 
-=item get_sparql($sparql)
+=item get_pattern ($bgp);
 
-Return an iterator for everty binding in the SPARQL query. For now the support is very basic.
-Only select queries are supported without union, sorting or limits with a form like:
-
-
-    PREFIX owl: <http://www.w3.org/2002/07/owl#>
-    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-    PREFIX dc: <http://purl.org/dc/elements/1.1/>
-    PREFIX : <http://dbpedia.org/resource/>
-    PREFIX dbpedia2: <http://dbpedia.org/property/>
-    PREFIX dbpedia: <http://dbpedia.org/>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-    PREFIX dbo: <http://dbpedia.org/ontology/>
-    SELECT *
-    WHERE {
-      ?car <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Luxury_vehicles> .
-      ?car foaf:name ?name .
-      ?car dbo:manufacturer ?man .
-      ?man foaf:name ?manufacturer
-    }
+Returns a stream object of all bindings matching the specified graph pattern.
 
 =back
 

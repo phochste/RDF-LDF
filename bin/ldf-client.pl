@@ -4,11 +4,15 @@ $|++;
 use strict;
 
 use RDF::LDF;
+use RDF::Trine::Store::LDF;
+use RDF::Trine::Store;
+use RDF::Query;
 use JSON;
 use File::Slurp;
 use Getopt::Long;
 use Tie::IxHash;
 use JSON;
+use Data::Dumper;
 
 my ($subject,$predicate,$object);
 
@@ -33,7 +37,7 @@ EOF
 	exit(1);
 }
 
-my $client = RDF::LDF->new(url => $url);
+binmode(STDOUT,":encoding(UTF-8)");
 
 if (defined $sparql) {
 	process_sparql($sparql);
@@ -45,6 +49,7 @@ else {
 sub process_fragments {
 	my ($subject,$predicate,$object) = @_;
 
+	my $client = RDF::LDF->new(url => $url);
 	my $it = $client->get_statements($subject,$predicate,$object);
 
 	print "[\n";
@@ -65,11 +70,18 @@ sub process_sparql {
 	my $sparql = shift;
 	$sparql = read_file($sparql) if -r $sparql;
 
-	my $it = $client->get_sparql($sparql);
+	my $store = RDF::Trine::Store->new_with_config({
+			storeclass => 'RDF::Trine::Store::LDF',
+			url => $url
+	});
 
-	print "[\n";
-	while (my $binding = $it->()) {
-		print encode_json($binding), "\n";
+	my $model =  RDF::Trine::Model->new($store);
+
+	my $rdf_query = RDF::Query->new( $sparql );
+
+	my $iter = $rdf_query->execute($model);
+
+	while (my $s = $iter->next) {
+		print $s . "\n";
 	}
-	print "]\n";
 }
