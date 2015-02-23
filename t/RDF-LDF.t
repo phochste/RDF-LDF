@@ -1,10 +1,10 @@
+
 use strict;
 use warnings;
 use Test::More;
 use Test::Exception;
 use Data::Dumper;
 use RDF::LDF;
-
 
 my $client = RDF::LDF->new(url => 'http://fragments.dbpedia.org/2014/en');
 

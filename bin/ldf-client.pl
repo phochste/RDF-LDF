@@ -71,7 +71,7 @@ sub process_sparql {
 	$sparql = read_file($sparql) if -r $sparql;
 
 	my $store = RDF::Trine::Store->new_with_config({
-			storeclass => 'RDF::Trine::Store::LDF',
+			storetype => 'LDF',
 			url => $url
 	});
 

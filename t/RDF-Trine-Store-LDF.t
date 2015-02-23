@@ -3,14 +3,25 @@ use warnings;
 use Test::More;
 use Test::Exception;
 use Data::Dumper;
-use RDF::LDF;
+use RDF::Trine::Store;
 
+my $pkg;
+BEGIN {
+    $pkg = 'RDF::Trine::Store::LDF';
+    use_ok $pkg;
+}
+require_ok $pkg;
 
-my $client = RDF::LDF->new(url => 'http://fragments.dbpedia.org/2014/en');
+my $store = $pkg->new_with_config({
+	storetype => 'LDF',
+	url => 'http://fragments.dbpedia.org/2014/en'
+});
 
-ok $client , 'got a client to http://fragments.dbpedia.org/2014/en';
+ok $store , 'got a store';
 
-ok $client->is_fragment_server , 'this server is a ldf server';
+my $model =  RDF::Trine::Model->new($store);
+
+ok $model , 'got a model';
 
 {
 	my $sparql =<<EOF;
@@ -27,17 +38,17 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT * WHERE { ?s ?o ?p}
 EOF
 
-	my $it = $client->get_sparql($sparql);
+	my $it = get_sparql($sparql);
 
 	ok $it , 'got an iterator';
 
-	my $binding = $it->();
+	my $binding = $it->next();
 
 	ok $binding , 'got a binding';
 
-	ok $binding->{'?s'};
-	ok $binding->{'?o'};
-	ok $binding->{'?p'};
+	ok $binding->{'s'};
+	ok $binding->{'o'};
+	ok $binding->{'p'};
 }
 
 {
@@ -57,11 +68,11 @@ SELECT * WHERE {
 }
 EOF
 
-	my $it = $client->get_sparql($sparql);
+	my $it = get_sparql($sparql);
 
 	ok $it , 'got an iterator';
 
-	my $binding = $it->();
+	my $binding = $it->next();
 
 	ok $binding , 'got a binding';
 
@@ -85,15 +96,15 @@ SELECT * WHERE {
 }
 EOF
 
-	my $it = $client->get_sparql($sparql);
+	my $it = get_sparql($sparql);
 
 	ok $it , 'got an iterator';
 
-	my $binding = $it->();
+	my $binding = $it->next();
 
 	ok $binding , 'got a binding';
 
-	ok $binding->{'?musician'};
+	ok $binding->{'musician'};
 }
 
 {
@@ -114,16 +125,16 @@ SELECT * WHERE {
 }
 EOF
 
-	my $it = $client->get_sparql($sparql);
+	my $it = get_sparql($sparql);
 
 	ok $it , 'got an iterator';
 
-	my $binding = $it->();
+	my $binding = $it->next();
 
 	ok $binding , 'got a binding';
 
-	ok $binding->{'?musician'};
-	ok $binding->{'?name'};
+	ok $binding->{'musician'};
+	ok $binding->{'name'};
 }
 
 {
@@ -146,7 +157,7 @@ WHERE {
 }
 EOF
 
-	my $it = $client->get_sparql($sparql);
+	my $it = get_sparql($sparql);
 
 	ok $it , 'got an iterator';
 
@@ -154,10 +165,10 @@ EOF
 
 	ok $binding , 'got a binding';
 
-	ok $binding->{'?p'};
-	ok $binding->{'?c'};
+	ok $binding->{'p'};
+	ok $binding->{'c'};
 
-	ok !defined($it->()) , 'got only one result';
+	ok !defined($it->next()) , 'got only one result';
 }
 
 {
@@ -181,20 +192,25 @@ WHERE {
 }
 EOF
 
-	my $it = $client->get_sparql($sparql);
+	my $it = get_sparql($sparql);
 
 	ok $it , 'got an iterator';
 
-	my $binding = $it->();
+	my $binding = $it->next();
 
 	ok $binding , 'got a binding';
 
-	ok $binding->{'?p'};
-	ok $binding->{'?c'};
-	ok $binding->{'?musician'};
+	ok $binding->{'p'};
+	ok $binding->{'c'};
+	ok $binding->{'musician'};
 
-	ok defined($it->()) , 'got only more results';
+	ok defined($it->next()) , 'got only more results';
 }
 
-
 done_testing;
+
+sub get_sparql {
+	my $sparql = shift;
+	my $rdf_query = RDF::Query->new( $sparql );
+	$rdf_query->execute($model);
+}
