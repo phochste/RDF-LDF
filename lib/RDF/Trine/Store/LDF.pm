@@ -14,7 +14,9 @@ use RDF::LDF;
 sub new {
     my ($class,%opts) = @_;
     my $ref = \%opts;
-    $ref->{ldf} =  RDF::LDF->new( url => $ref->{url});
+    my %args = (url => $ref->{url});
+    $args{ua} = $ref->{ua} if ($ref->{ua});
+    $ref->{ldf} =  RDF::LDF->new(%args);
     bless $ref , $class;
 }
 
@@ -24,7 +26,7 @@ sub _new_with_string {
 }
 sub _new_with_config {
     my ($class,$cfg) = @_;
-    $class->new(url => $cfg->{url});
+    $class->new(url => $cfg->{url}, ua => $cfg->{ua});
 }
 
 sub get_statements {
