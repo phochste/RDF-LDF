@@ -15,9 +15,9 @@ RDF::LDF - Linked Data Fragments client
     } 
 
     my $iterator = $client->get_sparql(<<EOF);
-PREFIX dbpedia: <http://dbpedia.org/resource/>
-SELECT * WHERE { dbpedia:Arthur_Schopenhauer ?predicate ?object . }
-EOF
+    PREFIX dbpedia: <http://dbpedia.org/resource/>
+    SELECT * WHERE { dbpedia:Arthur_Schopenhauer ?predicate ?object . }
+    EOF
 
     while (my $binding = $iterator->()) {
         # $binding is a hashref of all the bindings in the SPARQL

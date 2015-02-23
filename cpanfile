@@ -21,4 +21,5 @@ requires 'Moo', '1.004006';
 requires 'RDF::NS', '20140910';
 requires 'RDF::Query', '2.913';
 requires 'RDF::Trine', '1.013';
+requires 'Tie::IxHash', '1.23';
 requires 'URI::Escape', '1.65';

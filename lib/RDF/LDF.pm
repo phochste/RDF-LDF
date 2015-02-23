@@ -43,10 +43,10 @@ has sn => (
     }
 );
 
-has pattern => (
+has query_pattern => (
     is      => 'ro',
     lazy    => 1,
-    builder => 'get_pattern'
+    builder => 'get_query_pattern'
 );
 
 has lru => (
@@ -65,10 +65,12 @@ has log => (
 	}
 );
 
+# Public method
 sub is_fragment_server {
-    shift->pattern ? 1 : 0;
+    shift->query_pattern ? 1 : 0;
 }
 
+# Public method
 sub get_sparql {
     my ($self,$sparql) = @_;
 
@@ -325,9 +327,10 @@ sub _parse_triple_pattern {
 #   rdf_object    => <name_of_object_variable>
 #   void_uriLookupEndpoint => <endpoint_for_tripple_pattern>
 # }
-sub get_pattern {
+sub get_query_pattern {
     my ($self) = @_;
     my $url      = $self->url;
+
     my $fragment = $self->get_model_and_info($url);
 
     return undef unless defined $fragment;
@@ -357,7 +360,9 @@ sub get_pattern {
     $pattern;
 }
 
-# Given $subject,$predicate,$object return a generator for RDF::Trine::Model
+#----------------------------------------------------------------------------------
+
+# Public method
 sub get_statements {
     my ($self,@triple) = @_;
     my ($subject,$predicate,$object);
@@ -371,7 +376,7 @@ sub get_statements {
         $object    = $triple[0]->{object};
     }
 
-    my $pattern = $self->pattern;
+    my $pattern = $self->query_pattern;
 
     return undef unless defined $pattern;
 
