@@ -20,7 +20,7 @@ use Clone qw(clone);
 use Data::Dumper;
 use JSON;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 has url => (
     is => 'ro' ,
