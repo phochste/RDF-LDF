@@ -23,6 +23,16 @@ my $model =  RDF::Trine::Model->new($store);
 
 ok $model , 'got a model';
 
+my $it = $store->get_statements();
+
+ok $it , 'got an iterator on the compelete database';
+
+my $triple = $it->next();
+
+isa_ok $triple , 'RDF::Trine::Statement' , 'triple is an RDF::Trine::Statement';
+
+ok $triple , 'got a triple';
+
 {
 	my $sparql =<<EOF;
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

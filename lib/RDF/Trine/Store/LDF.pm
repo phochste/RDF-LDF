@@ -12,66 +12,66 @@ use RDF::Trine::Iterator;
 use RDF::LDF;
 
 sub new {
-	my ($class,%opts) = @_;
-	my $ref = \%opts;
-	$ref->{ldf} =  RDF::LDF->new( url => $ref->{url});
-	bless $ref , $class;
+    my ($class,%opts) = @_;
+    my $ref = \%opts;
+    $ref->{ldf} =  RDF::LDF->new( url => $ref->{url});
+    bless $ref , $class;
 }
 
 sub _new_with_string {
-	my ($class, $cfg) = @_;
-	$class->new(url => $cfg);
+    my ($class, $cfg) = @_;
+    $class->new(url => $cfg);
 }
 sub _new_with_config {
-	my ($class,$cfg) = @_;
-	$class->new(url => $cfg->{url});
+    my ($class,$cfg) = @_;
+    $class->new(url => $cfg->{url});
 }
 
 sub get_statements {
-	my ($self,$subject,$predicate,$object,$context) = @_;
+    my ($self,$subject,$predicate,$object,$context) = @_;
 
-	my $sub = $self->{ldf}->get_statements($subject,$predicate,$object);
-	RDF::Trine::Iterator::Graph->new($sub);
+    my $sub = $self->{ldf}->get_statements($subject,$predicate,$object);
+    RDF::Trine::Iterator::Graph->new($sub);
 }
 
 sub get_pattern {
-	my ($self,$bgp,$context) = @_;
+    my ($self,$bgp,$context) = @_;
 
-	$self->{ldf}->get_pattern($bgp,$context);
+    $self->{ldf}->get_pattern($bgp,$context);
 }
 
 sub get_contexts {
-	undef;
+    undef;
 }
 
 sub add_statement {
-	die "add_sattement is not implemented";
+    die "add_sattement is not implemented";
 }
 
 sub remove_statement {
-	die "remove_statement is not implemented";
+    die "remove_statement is not implemented";
 }
 
 sub remove_statements {
-	die "remove_statements is not implemented";
+    die "remove_statements is not implemented";
 }
 
 sub count_statements {
-	my ($self,$subject,$predicate,$object,$context) = @_;
+    my ($self,$subject,$predicate,$object,$context) = @_;
 
-	my $it = $self->{ldf}->get_statements($subject,$predicate,$object);
+    my $it = $self->{ldf}->get_statements($subject,$predicate,$object);
 
-	my ($triples,$info) = $it->();
+    my ($triples,$info) = $it->();
 
-	$info->{hydra_totalItems};
+    $info->{hydra_totalItems};
 }
 
 sub size {
-	shift->count_statements;
+    shift->count_statements;
 }
 
 sub supports {
-	undef;
+    undef;
 }
 
 1;
@@ -83,29 +83,39 @@ RDF::Trine::Store::LDF - RDF Store proxy for a Linked Data Fragment endpoint
 =head1 SYNOPSIS
 
     use RDF::Trine::Store::LDF;
-	use RDF::Trine::Store;
-	use RDF::Query;
+    use RDF::Trine::Store;
 
-	my $store = RDF::Trine::Store->new_with_config({
-			storeclass => 'RDF::Trine::Store::LDF',
-			url => $url
-	});
+    my $store = RDF::Trine::Store->new_with_config({
+            storetype => 'LDF',
+            url => $url
+    });
 
-	my $model =  RDF::Trine::Model->new($store);
+    my $it = $store->get_statements();
 
-	my $rdf_query = RDF::Query->new(<<EOF);
-	.
-	.
-	SPARQL
-	.
-	.
-	EOF
+    while (my $st = $it->next) {
+        # $st is a RDF::Trine::Statement
+        print "$st\n";
+    }
 
-	my $iter = $rdf_query->execute($model);
+    # Or query the store with SPAQRL
 
-	while (my $s = $iter->next) {
-		print $s . "\n";
-	}
+    use RDF::Query;
+    my $model =  RDF::Trine::Model->new($store);
+
+    my $rdf_query = RDF::Query->new(<<EOF);
+    .
+    .
+    SPARQL
+    .
+    .
+    EOF
+
+    my $iter = $rdf_query->execute($model);
+
+    while (my $s = $iter->next) {
+        # $s is a RDF::Trine::VariableBinding
+        print $s . "\n";
+    }
 
 =head1 DESCRIPTION
 
@@ -170,6 +180,13 @@ Not supported.
 =head1 AUTHOR
 
 Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or modify it under the terms of either: 
+the GNU General Public License as published by the Free Software Foundation; or the Artistic License.
+
+See L<http://dev.perl.org/licenses/> for more information.
 
 =encoding utf8
 

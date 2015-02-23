@@ -626,9 +626,26 @@ RDF::LDF - Linked Data Fragments client
 
 =head1 SYNOPSIS
 
+    use RDF::Trine::Store::LDF;
+    use RDF::Trine::Store;
+
+    my $store = RDF::Trine::Store->new_with_config({
+            storetype => 'LDF',
+            url => $url
+    });
+
+    my $it = $store->get_statements();
+
+    while (my $st = $it->next) {
+        # $st is a RDF::Trine::Statement
+        print "$st\n";
+    }
+
+    # Or the low level modules themselves
+
     use RDF::LDF;
 
-    my $client = RDF::LDF ->new(url => 'http://fragments.dbpedia.org/2014/en');
+    my $client = RDF::LDF->new(url => 'http://fragments.dbpedia.org/2014/en');
 
     my $iterator = $client->get_statements($subject, $predicate, $object);
 
@@ -636,14 +653,14 @@ RDF::LDF - Linked Data Fragments client
         # $model is a RDF::Trine::Statement
     } 
 
+
 =head1 DESCRIPTION
 
 The RDF::LDF  module is a basic implementation of a Linked Data Fragment client. For details see:
 <http://linkeddatafragments.org/>.
 
-=head1 STATUS
-
-THIS IS ALPHA CODE! The implementation is unreliable and the interface is subject to change.
+This a low level module to implement the Linked Data Fragment protocol. You probably want to
+use L<RDF::Trine::Store::LDF>.
 
 =head1 CONFIGURATION
 
@@ -659,11 +676,11 @@ URL to retrieve RDF from.
 
 =over 
 
-=item get_statements($subject,$predicate,$object)
+=item get_statements( $subject, $predicate, $object )
 
 Return an iterator for every RDF::Trine::Statement served by the LDF server.
 
-=item get_pattern ($bgp);
+=item get_pattern( $bgp );
 
 Returns a stream object of all bindings matching the specified graph pattern.
 
@@ -672,6 +689,13 @@ Returns a stream object of all bindings matching the specified graph pattern.
 =head1 AUTHOR
 
 Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or modify it under the terms of either: 
+the GNU General Public License as published by the Free Software Foundation; or the Artistic License.
+
+See L<http://dev.perl.org/licenses/> for more information.
 
 =encoding utf8
 

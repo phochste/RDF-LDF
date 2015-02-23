@@ -12,7 +12,6 @@ use File::Slurp;
 use Getopt::Long;
 use Tie::IxHash;
 use JSON;
-use Data::Dumper;
 
 my ($subject,$predicate,$object);
 
