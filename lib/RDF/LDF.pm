@@ -22,18 +22,15 @@ use JSON;
 use URI::Template;
 
 our $VERSION = '0.04';
+{
+	my $ua	= RDF::Trine->default_useragent;
+	$ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);
+}
+
 
 has url => (
     is => 'ro' ,
     required => 1
-);
-
-has ua => (
-    is      => 'ro',
-    lazy    => 1,
-    builder => sub {
-        LWP::UserAgent->new( agent => "RDF:::LDF/$RDF::LDF::VERSION" );
-    }
 );
 
 has sn => (

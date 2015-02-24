@@ -7,7 +7,9 @@ use Data::Dumper;
 use RDF::LDF;
 use Test::LWP::UserAgent;
 
-my $client = RDF::LDF->new(url => 'http://fragments.dbpedia.org/2014/en', ua => user_agent());
+RDF::Trine->default_useragent(user_agent());
+
+my $client = RDF::LDF->new(url => 'http://fragments.dbpedia.org/2014/en');
 
 ok $client , 'got a client to http://fragments.dbpedia.org/2014/en';
 
