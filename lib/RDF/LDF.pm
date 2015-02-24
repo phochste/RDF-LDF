@@ -397,16 +397,16 @@ sub get_statements {
         $object    = $triple[0]->{object};
     }
 
-	my %params;
-	$params{subject}	= $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
-	$params{predicate}	= $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
+	$subject	= $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
+	$predicate	= $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
 	if (is_invocant($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
-		$params{object}	= ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
+		$object	= ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
 	}
 	
     my $pattern = $self->query_pattern;
     return undef unless defined $pattern;
 	
+	my %params;
 	$params{ $pattern->{rdf_subject} }		= $subject if is_string($subject);
 	$params{ $pattern->{rdf_predicate} }	= $predicate if is_string($predicate);
 	$params{ $pattern->{rdf_object} }		= $object if is_string($object);
