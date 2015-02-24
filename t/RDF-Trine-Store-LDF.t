@@ -12,12 +12,25 @@ BEGIN {
 }
 require_ok $pkg;
 
-my $store = $pkg->new_with_config({
+my $store;
+
+$store = $pkg->new_with_config({
+	storetype => 'LDF',
+	url => 'http://fragments.dbpedia.org/201x/en'
+});
+
+ok ! defined $store , 'indeed this is not a LDF store';
+
+$store = $pkg->new_with_config({
 	storetype => 'LDF',
 	url => 'http://fragments.dbpedia.org/2014/en'
 });
 
-ok $store , 'got a store';
+ok $store , 'got a correct store';
+
+throws_ok { $store->add_statement() } 'RDF::Trine::Error::UnimplementedError' , 'add_statement throws error';
+throws_ok { $store->remove_statement() } 'RDF::Trine::Error::UnimplementedError' , 'remove_statement throws error';
+throws_ok { $store->remove_statements() } 'RDF::Trine::Error::UnimplementedError' , 'remove_statements throws error';
 
 my $model =  RDF::Trine::Model->new($store);
 

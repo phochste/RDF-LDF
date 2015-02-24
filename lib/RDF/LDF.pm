@@ -11,6 +11,7 @@ use Data::Compare;
 use RDF::NS;
 use RDF::Trine;
 use RDF::Query;
+use RDF::Trine::Error qw(:try);
 use URI::Escape;
 use LWP::UserAgent;
 use HTTP::Request::Common;
@@ -79,12 +80,16 @@ sub is_fragment_server {
 sub get_pattern {
     my ($self,$bgp,$context,%args) = @_;
 
+    unless (defined $bgp) {
+        throw RDF::Trine::Error::MethodInvocationError -text => "can't execute get_pattern for an empty pattern";
+    }
+
     my (@triples)   = ($bgp->isa('RDF::Trine::Statement') or $bgp->isa('RDF::Query::Algebra::Filter'))
                     ? $bgp
                     : $bgp->triples;
 
     unless (@triples) {
-        die "can't execute get_pattern for an empty pattern";
+        throw RDF::Trine::Error::MethodInvocationError -text => "can't execute get_pattern for an empty pattern";
     }
 
     my @vars = $bgp->referenced_variables;

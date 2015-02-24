@@ -10,11 +10,15 @@ use base qw(RDF::Trine::Store);
 use RDF::Trine::Store;
 use RDF::Trine::Iterator;
 use RDF::LDF;
+use RDF::Trine::Error qw(:try);
 
 sub new {
     my ($class,%opts) = @_;
     my $ref = \%opts;
     $ref->{ldf} =  RDF::LDF->new( url => $ref->{url});
+
+    return undef unless $ref->{ldf}->is_fragment_server;
+    
     bless $ref , $class;
 }
 
@@ -45,15 +49,15 @@ sub get_contexts {
 }
 
 sub add_statement {
-    die "add_sattement is not implemented";
+    throw RDF::Trine::Error::UnimplementedError -text => "LDF add_statement support not implemented";
 }
 
 sub remove_statement {
-    die "remove_statement is not implemented";
+    throw RDF::Trine::Error::UnimplementedError -text => "LDF remove_statement support not implemented";
 }
 
 sub remove_statements {
-    die "remove_statements is not implemented";
+    throw RDF::Trine::Error::UnimplementedError -text => "LDF remove_statements support not implemented";
 }
 
 sub count_statements {
