@@ -493,36 +493,9 @@ sub get_fragment {
 
     $self->log->info("fetching: $url");
 
-    my $req = GET $url, Accept => 'text/turtle';
-
-    my $response = $self->ua->request($req);
-
-    if ($response->is_success) {
-        $self->parse_string($response->decoded_content);
-    }
-    else {
-        warn Dumper($response);
-        Catmandu::Error->throw("$url failed");
-    }
-}
-
-# Parse turtle into an RDF::Trine::Model
-sub parse_string {
-    my ($self,$string) = @_;
-    $self->log->debug("parsing: $string");
-    my $parser = RDF::Trine::Parser->new('turtle');
     my $model  = RDF::Trine::Model->temporary_model;
-
-    eval {
-        $parser->parse_into_model($self->url,$string,$model);
-    };
-
-    if ($@) {
-        $self->log->error("failed to parse input");
-        return undef;
-    }
-
-    $model;
+	RDF::Trine::Parser->parse_url_into_model($url, $model);
+	return $model;
 }
 
 # Create a hash with fragment metadata from a RDF::Trine::Model
