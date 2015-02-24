@@ -71,9 +71,9 @@ sub is_fragment_server {
 }
 
 # Public method
-# Optimized method to find all bindings mayching a pattern
+# Optimized method to find all bindings matching a pattern
 # See:
-# Verborgh, Ruden, et al. Querying Datasets on the Web with High Availability. ISWC2014
+# Verborgh, Ruben, et al. Querying Datasets on the Web with High Availability. ISWC2014
 # http://linkeddatafragments.org/publications/iswc2014.pdf
 sub get_pattern {
     my ($self,$bgp,$context,%args) = @_;
