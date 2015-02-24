@@ -295,26 +295,6 @@ sub _total_triples {
     $info->{hydra_totalItems};
 }
 
-# For an parsed SPARQL query find all BGP triples
-sub _parse_bgp {
-    my ($self,@pattern) = @_;
-
-    for my $p (@pattern) {
-        if ($p->isa('RDF::Query::Algebra::GroupGraphPattern')) {
-             my @triples = ();
-             for my $bgp ($p->patterns) {
-                push @triples , map { $self->_parse_triple_pattern($_)} $bgp->triples;
-             }
-             return \@triples;
-        }
-        else {
-            return $self->_parse_bgp($p->pattern);
-        }
-    }
-
-    return undef;
-}
-
 sub _node_as_string {
 	my $self	= shift;
 	my $node	= shift;
@@ -674,6 +654,10 @@ Returns a stream object of all bindings matching the specified graph pattern.
 =head1 AUTHOR
 
 Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
+
+=head1 CONTRIBUTORS
+
+Gregory Todd Williams, C<< greg@evilfunhouse.com >>
 
 =head1 LICENSE
 
