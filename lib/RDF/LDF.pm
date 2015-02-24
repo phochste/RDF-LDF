@@ -494,7 +494,15 @@ sub get_fragment {
     $self->log->info("fetching: $url");
 
     my $model  = RDF::Trine::Model->temporary_model;
-	RDF::Trine::Parser->parse_url_into_model($url, $model);
+    eval {
+		RDF::Trine::Parser->parse_url_into_model($url, $model);
+	};
+	
+	if ($@) {
+		$self->log->error("failed to parse input");
+		return undef;
+	}
+	
 	return $model;
 }
 
