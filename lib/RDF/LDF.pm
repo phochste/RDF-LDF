@@ -213,8 +213,7 @@ sub _apply_binding {
         for (qw(subject predicate object)) {
             my $val = $pattern->{$_};
             if (defined($val) && $binding->{$val}) {
-                my $str_val = $binding->{$val}->as_string;
-                $str_val =~ s{^<(.*)>$}{$1};
+                my $str_val	= $self->_node_as_string($binding->{$val});
                 $pattern->{$_} = $str_val
             }
         }
@@ -316,28 +315,33 @@ sub _parse_bgp {
     return undef;
 }
 
+sub _node_as_string {
+	my $self	= shift;
+	my $node	= shift;
+	if (is_invocant($node) && $node->isa('RDF::Trine::Node')) {
+		if ($node->isa('RDF::Trine::Node::Variable')) {
+			return $node->as_string; # ?foo
+		} elsif ($node->isa('RDF::Trine::Node::Literal')) {
+			return $node->as_string; # includes quotes and any language or datatype
+		} else {
+			return $node->value; # the raw IRI or blank node identifier value, without other syntax
+		}
+	}
+	return '';
+}
+
 # For an BGP triple create a fragment pattern
 sub _parse_triple_pattern {
     my ($self,$triple) = @_;
-    my ($subject,$predicate,$object);
-
-    $subject   = $triple->subject->as_string;
-    $subject   =~ s{^<(.*)>$}{$1};
-    $subject   =~ s{^\((.*)\)$}{?$1};
-
-    $predicate = $triple->predicate->as_string;
-    $predicate =~ s{^<(.*)>$}{$1};
-    $predicate =~ s{^\((.*)\)$}{?$1};
-
-    $object    = $triple->object->as_string;
-    $object    =~ s{^<(.*)>$}{$1};
-    $object    =~ s{^\((.*)\)$}{?$1};
-
-    return {
-        subject   => $subject ,
-        predicate => $predicate , 
-        object    => $object
-    };
+	my $subject		= $self->_node_as_string($triple->subject);
+	my $predicate	= $self->_node_as_string($triple->predicate);
+	my $object		= $self->_node_as_string($triple->object);
+	my $hash		= {
+		subject   => $subject ,
+		predicate => $predicate,
+		object    => $object
+	};
+	return $hash;
 }
 
 # Dynamic find out which tripple patterns need to be used to query the fragment server
@@ -475,36 +479,17 @@ sub get_fragment {
 
     $self->log->info("fetching: $url");
 
-    my $req = GET $url, Accept => 'text/turtle';
-
-    my $response = $self->ua->request($req);
-
-    if ($response->is_success) {
-        $self->parse_string($response->decoded_content);
-    }
-    else {
-        warn Dumper($response);
-        Catmandu::Error->throw("$url failed");
-    }
-}
-
-# Parse turtle into an RDF::Trine::Model
-sub parse_string {
-    my ($self,$string) = @_;
-    $self->log->debug("parsing: $string");
-    my $parser = RDF::Trine::Parser->new('turtle');
     my $model  = RDF::Trine::Model->temporary_model;
-
     eval {
-        $parser->parse_into_model($self->url,$string,$model);
-    };
-
-    if ($@) {
-        $self->log->error("failed to parse input");
-        return undef;
-    }
-
-    $model;
+		RDF::Trine::Parser->parse_url_into_model($url, $model);
+	};
+	
+	if ($@) {
+		$self->log->error("failed to parse input");
+		return undef;
+	}
+	
+	return $model;
 }
 
 # Create a hash with fragment metadata from a RDF::Trine::Model
