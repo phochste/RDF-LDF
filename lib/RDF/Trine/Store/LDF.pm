@@ -183,6 +183,10 @@ Not supported.
 
 Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
 
+=head1 CONTRIBUTORS
+
+Gregory Todd Williams, C<< greg@evilfunhouse.com >>
+
 =head1 LICENSE
 
 This program is free software; you can redistribute it and/or modify it under the terms of either: 

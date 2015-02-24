@@ -59,6 +59,10 @@ use [RDF::Trine::Store::LDF](https://metacpan.org/pod/RDF::Trine::Store::LDF).
 
 Patrick Hochstenbach, `patrick.hochstenbach at ugent.be`
 
+# CONTRIBUTORS
+
+Gregory Todd Williams, `greg@evilfunhouse.com`
+
 # LICENSE
 
 This program is free software; you can redistribute it and/or modify it under the terms of either: 

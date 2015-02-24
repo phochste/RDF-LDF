@@ -52,6 +52,7 @@
             "RDF::Trine" : "1.013",
             "Tie::IxHash" : "1.23",
             "URI::Escape" : "1.65",
+            "URI::Template" : "0.21",
             "perl" : "v5.10.1"
          }
       },
@@ -76,6 +77,9 @@
          "web" : "https://github.com/phochste/RDF-LDF"
       }
    },
-   "version" : "0.04"
+   "version" : "0.04",
+   "x_contributors" : [
+      "Gregory Todd Williams <greg@evilfunhouse.com>"
+   ]
 }
 
