@@ -19,6 +19,7 @@ use Cache::LRU;
 use Clone qw(clone);
 use Data::Dumper;
 use JSON;
+use URI::Template;
 
 our $VERSION = '0.04';
 
@@ -396,41 +397,22 @@ sub get_statements {
         $object    = $triple[0]->{object};
     }
 
-    if (is_invocant($subject) && $subject->isa('RDF::Trine::Node')) {
-        $subject = $subject->as_string;
-        $subject   =~ s{^<(.*)>$}{$1};
-        $subject   =~ s{^\((.*)\)$}{?$1};
-    }
-
-    if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node')) {
-        $predicate = $predicate->as_string;
-        $predicate   =~ s{^<(.*)>$}{$1};
-        $predicate   =~ s{^\((.*)\)$}{?$1};
-    }
-
-    if (is_invocant($object) && $object->isa('RDF::Trine::Node')) {
-        $object = $object->as_string;
-        $object   =~ s{^<(.*)>$}{$1};
-        $object   =~ s{^\((.*)\)$}{?$1};
-    }
-
+	$subject	= $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
+	$predicate	= $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
+	if (is_invocant($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
+		$object	= ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
+	}
+	
     my $pattern = $self->query_pattern;
-
     return undef unless defined $pattern;
-
-    my @param = ();
-
-    push @param , $pattern->{rdf_subject}   . "=" . uri_escape($subject)   if is_string($subject);
-    push @param , $pattern->{rdf_predicate} . "=" . uri_escape($predicate) if is_string($predicate);
-    push @param , $pattern->{rdf_object}    . "=" . uri_escape($object)    if is_string($object);
-
-    my $url = $self->url;
-
-    if (@param) {
-        my $params = join("&",@param);
-        $url = $pattern->{void_uriLookupEndpoint};
-        $url =~ s/{\?\S+}/?$params/;
-    }
+	
+	my %params;
+	$params{ $pattern->{rdf_subject} }		= $subject if is_string($subject);
+	$params{ $pattern->{rdf_predicate} }	= $predicate if is_string($predicate);
+	$params{ $pattern->{rdf_object} }		= $object if is_string($object);
+	
+    my $template	= URI::Template->new($pattern->{void_uriLookupEndpoint});
+    my $url			= $template->process(%params)->as_string;
 
     my $sub = sub {
         state $model;

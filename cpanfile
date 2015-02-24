@@ -23,3 +23,4 @@ requires 'RDF::Query', '2.913';
 requires 'RDF::Trine', '1.013';
 requires 'Tie::IxHash', '1.23';
 requires 'URI::Escape', '1.65';
+requires 'URI::Template', '0.21';
