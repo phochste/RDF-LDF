@@ -15,8 +15,9 @@ my $client = RDF::LDF->new(url => 'http://example.org/2014/en?test=1');
 ok $client , 'got a client to http://example.org/2014/en?test=1';
 ok $client->is_fragment_server , 'this server is a ldf server';
 
-if (0) {
-	my $triple	= statement(variable('s'), iri('http://dbpedia.org/ontology/birthPlace'), variable('o'));
+{
+	diag("single triple pattern");
+	my $triple	= statement(variable('s'), iri('http://dbpedia.org/ontology/birthPlace'), variable('place'));
 	my $iter	= $client->get_pattern($triple);
 	isa_ok $iter, 'RDF::Trine::Iterator::Bindings', 'iterator for get_pattern';
 	my $r		= $iter->next;
@@ -27,6 +28,7 @@ if (0) {
 }
 
 {
+	diag("two triple pattern BGP");
 	my $bgp		= RDF::Query::Algebra::BasicGraphPattern->new(
 		statement(variable('s'), iri('http://dbpedia.org/ontology/birthPlace'), variable('place')),
 		statement(variable('s'), iri('http://xmlns.com/foaf/0.1/name'), variable('name')),
