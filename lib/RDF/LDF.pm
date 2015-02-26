@@ -56,11 +56,11 @@ has lru => (
 );
 
 has log => (
-	is    => 'ro',
-	lazy  => 1,
-	builder => sub {
-		Log::Any->get_logger(category => ref(shift));
-	}
+    is    => 'ro',
+    lazy  => 1,
+    builder => sub {
+        Log::Any->get_logger(category => ref(shift));
+    }
 );
 
 # Public method
@@ -76,12 +76,16 @@ sub is_fragment_server {
 sub get_pattern {
     my ($self,$bgp,$context,%args) = @_;
 
+    unless (defined $bgp) {
+        throw RDF::Trine::Error::MethodInvocationError -text => "can't execute get_pattern for an empty pattern";
+    }
+
     my (@triples)   = ($bgp->isa('RDF::Trine::Statement') or $bgp->isa('RDF::Query::Algebra::Filter'))
                     ? $bgp
                     : $bgp->triples;
 
     unless (@triples) {
-        die "can't execute get_pattern for an empty pattern";
+        throw RDF::Trine::Error::MethodInvocationError -text => "can't execute get_pattern for an empty pattern";
     }
 
     my @vars = $bgp->referenced_variables;
@@ -210,7 +214,7 @@ sub _apply_binding {
         for (qw(subject predicate object)) {
             my $val = $pattern->{$_};
             if (defined($val) && $binding->{$val}) {
-                my $str_val	= $self->_node_as_string($binding->{$val});
+                my $str_val    = $self->_node_as_string($binding->{$val});
                 $pattern->{$_} = $str_val
             }
         }
@@ -293,32 +297,32 @@ sub _total_triples {
 }
 
 sub _node_as_string {
-	my $self	= shift;
-	my $node	= shift;
-	if (is_invocant($node) && $node->isa('RDF::Trine::Node')) {
-		if ($node->isa('RDF::Trine::Node::Variable')) {
-			return $node->as_string; # ?foo
-		} elsif ($node->isa('RDF::Trine::Node::Literal')) {
-			return $node->as_string; # includes quotes and any language or datatype
-		} else {
-			return $node->value; # the raw IRI or blank node identifier value, without other syntax
-		}
-	}
-	return '';
+    my $self    = shift;
+    my $node    = shift;
+    if (is_invocant($node) && $node->isa('RDF::Trine::Node')) {
+        if ($node->isa('RDF::Trine::Node::Variable')) {
+            return $node->as_string; # ?foo
+        } elsif ($node->isa('RDF::Trine::Node::Literal')) {
+            return $node->as_string; # includes quotes and any language or datatype
+        } else {
+            return $node->value; # the raw IRI or blank node identifier value, without other syntax
+        }
+    }
+    return '';
 }
 
 # For an BGP triple create a fragment pattern
 sub _parse_triple_pattern {
     my ($self,$triple) = @_;
-	my $subject		= $self->_node_as_string($triple->subject);
-	my $predicate	= $self->_node_as_string($triple->predicate);
-	my $object		= $self->_node_as_string($triple->object);
-	my $hash		= {
-		subject   => $subject ,
-		predicate => $predicate,
-		object    => $object
-	};
-	return $hash;
+    my $subject        = $self->_node_as_string($triple->subject);
+    my $predicate    = $self->_node_as_string($triple->predicate);
+    my $object        = $self->_node_as_string($triple->object);
+    my $hash        = {
+        subject   => $subject ,
+        predicate => $predicate,
+        object    => $object
+    };
+    return $hash;
 }
 
 # Dynamic find out which tripple patterns need to be used to query the fragment server
@@ -378,22 +382,22 @@ sub get_statements {
         $object    = $triple[0]->{object};
     }
 
-	$subject	= $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
-	$predicate	= $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
-	if (is_invocant($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
-		$object	= ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
-	}
-	
+    $subject    = $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
+    $predicate    = $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
+    if (is_invocant($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
+        $object    = ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
+    }
+    
     my $pattern = $self->query_pattern;
     return undef unless defined $pattern;
-	
-	my %params;
-	$params{ $pattern->{rdf_subject} }		= $subject if is_string($subject);
-	$params{ $pattern->{rdf_predicate} }	= $predicate if is_string($predicate);
-	$params{ $pattern->{rdf_object} }		= $object if is_string($object);
-	
-    my $template	= URI::Template->new($pattern->{void_uriLookupEndpoint});
-    my $url			= $template->process(%params)->as_string;
+    
+    my %params;
+    $params{ $pattern->{rdf_subject} }        = $subject if is_string($subject);
+    $params{ $pattern->{rdf_predicate} }    = $predicate if is_string($predicate);
+    $params{ $pattern->{rdf_object} }        = $object if is_string($object);
+    
+    my $template    = URI::Template->new($pattern->{void_uriLookupEndpoint});
+    my $url            = $template->process(%params)->as_string;
 
     my $sub = sub {
         state $model;
@@ -458,15 +462,15 @@ sub get_fragment {
 
     my $model  = RDF::Trine::Model->temporary_model;
     eval {
-		RDF::Trine::Parser->parse_url_into_model($url, $model);
-	};
-	
-	if ($@) {
-		$self->log->error("failed to parse input");
-		return undef;
-	}
-	
-	return $model;
+        RDF::Trine::Parser->parse_url_into_model($url, $model);
+    };
+    
+    if ($@) {
+        $self->log->error("failed to parse input");
+        return undef;
+    }
+    
+    return $model;
 }
 
 # Create a hash with fragment metadata from a RDF::Trine::Model

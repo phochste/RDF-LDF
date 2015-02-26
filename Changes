@@ -1,7 +1,11 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
-
+  - adding better error handling
+  - Catmandu::Error->throw is called but not loaded
+  - use RDF::Trine::Parser to load URL contents into a model
+  - use URI::Template in constructing fragment URLs
+  
 0.04  2015-02-23 16:38:51 CET
   - fixing the non-zero results bug
   - adding example sparql for testing

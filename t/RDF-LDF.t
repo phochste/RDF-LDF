@@ -31,6 +31,8 @@ ok $info , 'got ldf metadata';
 
 ok $info->{void_triples}  , 'got lotsa triples';
 
+throws_ok { $client->get_pattern() } 'RDF::Trine::Error::MethodInvocationError' , 'throws on empty pattern';
+
 done_testing;
 
 sub user_agent {
@@ -88,4 +90,3 @@ END
 		HTTP::Response->new('200', 'OK', ['Content-Type' => 'text/plain'], $DBPEDIA_FRAGMENT));
 	return $ua;
 }
-
