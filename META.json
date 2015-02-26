@@ -60,9 +60,9 @@
          "requires" : {
             "Test::Deep" : "0.112",
             "Test::Exception" : "0.32",
+            "Test::LWP::UserAgent" : "0.026",
             "Test::More" : "1.001003",
-            "Test::Pod" : "0",
-            "Test::LWP::UserAgent" : "0.026"
+            "Test::Pod" : "0"
          }
       }
    },
