@@ -274,7 +274,7 @@ sub _find_best_pattern {
     return ($best_pattern, \@rest_triples);
 }
 
-# Find the total number of trilpes available for a pattern
+# Find the total number of triples available for a pattern
 #
 # Usage:
 #
@@ -325,7 +325,7 @@ sub _parse_triple_pattern {
     return $hash;
 }
 
-# Dynamic find out which tripple patterns need to be used to query the fragment server
+# Dynamic find out which triple patterns need to be used to query the fragment server
 # Returns a hash:
 # {
 #   rdf_subject   => <name_of_subject_variable> ,
