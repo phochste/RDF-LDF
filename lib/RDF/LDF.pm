@@ -11,7 +11,6 @@ use Data::Compare;
 use RDF::NS;
 use RDF::Trine;
 use RDF::Query;
-use RDF::Trine::Error qw(:try);
 use URI::Escape;
 use LWP::UserAgent;
 use HTTP::Request::Common;
@@ -23,18 +22,15 @@ use JSON;
 use URI::Template;
 
 our $VERSION = '0.04';
+{
+	my $ua	= RDF::Trine->default_useragent;
+	$ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);
+}
+
 
 has url => (
     is => 'ro' ,
     required => 1
-);
-
-has ua => (
-    is      => 'ro',
-    lazy    => 1,
-    builder => sub {
-        LWP::UserAgent->new( agent => "RDF:::LDF/$RDF::LDF::VERSION" );
-    }
 );
 
 has sn => (
