@@ -5,7 +5,10 @@ Revision history for RDF::LDF
   - Catmandu::Error->throw is called but not loaded
   - use RDF::Trine::Parser to load URL contents into a model
   - use URI::Template in constructing fragment URLs
-  
+  - Improved use of RDF::Trine user agent and added mocked network tests
+  - Enabled more get_pattern tests
+  - Network test are optional with RDFLDF_NETWORK_TESTS=1
+
 0.04  2015-02-23 16:38:51 CET
   - fixing the non-zero results bug
   - adding example sparql for testing
