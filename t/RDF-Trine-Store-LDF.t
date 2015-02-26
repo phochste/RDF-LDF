@@ -12,42 +12,47 @@ BEGIN {
 }
 require_ok $pkg;
 
-my $store;
+SKIP: {
+	unless ($ENV{RDFLDF_NETWORK_TESTS}) {
+		skip( "No network. Set RDFLDF_NETWORK_TESTS to run these tests.", 5 );
+	}
 
-$store = $pkg->new_with_config({
-	storetype => 'LDF',
-	url => 'http://fragments.dbpedia.org/201x/en'
-});
+	my $store;
 
-ok ! defined $store , 'indeed this is not a LDF store';
+	$store = $pkg->new_with_config({
+		storetype => 'LDF',
+		url => 'http://fragments.dbpedia.org/201x/en'
+	});
 
-$store = $pkg->new_with_config({
-	storetype => 'LDF',
-	url => 'http://fragments.dbpedia.org/2014/en'
-});
+	ok ! defined $store , 'indeed this is not a LDF store';
 
-ok $store , 'got a correct store';
+	$store = $pkg->new_with_config({
+		storetype => 'LDF',
+		url => 'http://fragments.dbpedia.org/2014/en'
+	});
 
-throws_ok { $store->add_statement() } 'RDF::Trine::Error::UnimplementedError' , 'add_statement throws error';
-throws_ok { $store->remove_statement() } 'RDF::Trine::Error::UnimplementedError' , 'remove_statement throws error';
-throws_ok { $store->remove_statements() } 'RDF::Trine::Error::UnimplementedError' , 'remove_statements throws error';
+	ok $store , 'got a correct store';
 
-my $model =  RDF::Trine::Model->new($store);
+	throws_ok { $store->add_statement() } 'RDF::Trine::Error::UnimplementedError' , 'add_statement throws error';
+	throws_ok { $store->remove_statement() } 'RDF::Trine::Error::UnimplementedError' , 'remove_statement throws error';
+	throws_ok { $store->remove_statements() } 'RDF::Trine::Error::UnimplementedError' , 'remove_statements throws error';
 
-ok $model , 'got a model';
+	my $model =  RDF::Trine::Model->new($store);
 
-my $it = $store->get_statements();
+	ok $model , 'got a model';
 
-ok $it , 'got an iterator on the compelete database';
+	my $it = $store->get_statements();
 
-my $triple = $it->next();
+	ok $it , 'got an iterator on the compelete database';
 
-isa_ok $triple , 'RDF::Trine::Statement' , 'triple is an RDF::Trine::Statement';
+	my $triple = $it->next();
 
-ok $triple , 'got a triple';
+	isa_ok $triple , 'RDF::Trine::Statement' , 'triple is an RDF::Trine::Statement';
 
-{
-	my $sparql =<<EOF;
+	ok $triple , 'got a triple';
+
+	{
+		my $sparql =<<EOF;
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -61,21 +66,21 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT * WHERE { ?s ?o ?p}
 EOF
 
-	my $it = get_sparql($sparql);
+		my $it = get_sparql($model,$sparql);
 
-	ok $it , 'got an iterator';
+		ok $it , 'got an iterator';
 
-	my $binding = $it->next();
+		my $binding = $it->next();
 
-	ok $binding , 'got a binding';
+		ok $binding , 'got a binding';
 
-	ok $binding->{'s'};
-	ok $binding->{'o'};
-	ok $binding->{'p'};
-}
+		ok $binding->{'s'};
+		ok $binding->{'o'};
+		ok $binding->{'p'};
+	}
 
-{
-	my $sparql =<<EOF;
+	{
+		my $sparql =<<EOF;
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -91,19 +96,19 @@ SELECT * WHERE {
 }
 EOF
 
-	my $it = get_sparql($sparql);
+		my $it = get_sparql($model,$sparql);
 
-	ok $it , 'got an iterator';
+		ok $it , 'got an iterator';
 
-	my $binding = $it->next();
+		my $binding = $it->next();
 
-	ok $binding , 'got a binding';
+		ok $binding , 'got a binding';
 
-	is int(keys %$binding) , 0 , 'binding is empty';
-}
+		is int(keys %$binding) , 0 , 'binding is empty';
+	}
 
-{
-	my $sparql =<<EOF;
+	{
+		my $sparql =<<EOF;
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -119,19 +124,19 @@ SELECT * WHERE {
 }
 EOF
 
-	my $it = get_sparql($sparql);
+		my $it = get_sparql($model,$sparql);
 
-	ok $it , 'got an iterator';
+		ok $it , 'got an iterator';
 
-	my $binding = $it->next();
+		my $binding = $it->next();
 
-	ok $binding , 'got a binding';
+		ok $binding , 'got a binding';
 
-	ok $binding->{'musician'};
-}
+		ok $binding->{'musician'};
+	}
 
-{
-	my $sparql =<<EOF;
+	{
+		my $sparql =<<EOF;
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -148,20 +153,20 @@ SELECT * WHERE {
 }
 EOF
 
-	my $it = get_sparql($sparql);
+		my $it = get_sparql($model,$sparql);
 
-	ok $it , 'got an iterator';
+		ok $it , 'got an iterator';
 
-	my $binding = $it->next();
+		my $binding = $it->next();
 
-	ok $binding , 'got a binding';
+		ok $binding , 'got a binding';
 
-	ok $binding->{'musician'};
-	ok $binding->{'name'};
-}
+		ok $binding->{'musician'};
+		ok $binding->{'name'};
+	}
 
-{
-	my $sparql =<<EOF;
+	{
+		my $sparql =<<EOF;
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -180,22 +185,22 @@ WHERE {
 }
 EOF
 
-	my $it = get_sparql($sparql);
+		my $it = get_sparql($model,$sparql);
 
-	ok $it , 'got an iterator';
+		ok $it , 'got an iterator';
 
-	my $binding = $it->();
+		my $binding = $it->();
 
-	ok $binding , 'got a binding';
+		ok $binding , 'got a binding';
 
-	ok $binding->{'p'};
-	ok $binding->{'c'};
+		ok $binding->{'p'};
+		ok $binding->{'c'};
 
-	ok !defined($it->next()) , 'got only one result';
-}
+		ok !defined($it->next()) , 'got only one result';
+	}
 
-{
-	my $sparql =<<EOF;
+	{
+		my $sparql =<<EOF;
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -215,24 +220,26 @@ WHERE {
 }
 EOF
 
-	my $it = get_sparql($sparql);
+		my $it = get_sparql($model,$sparql);
 
-	ok $it , 'got an iterator';
+		ok $it , 'got an iterator';
 
-	my $binding = $it->next();
+		my $binding = $it->next();
 
-	ok $binding , 'got a binding';
+		ok $binding , 'got a binding';
 
-	ok $binding->{'p'};
-	ok $binding->{'c'};
-	ok $binding->{'musician'};
+		ok $binding->{'p'};
+		ok $binding->{'c'};
+		ok $binding->{'musician'};
 
-	ok defined($it->next()) , 'got only more results';
+		ok defined($it->next()) , 'got only more results';
+	}
 }
 
 done_testing;
 
 sub get_sparql {
+	my $model  = shift;
 	my $sparql = shift;
 	my $rdf_query = RDF::Query->new( $sparql );
 	$rdf_query->execute($model);
