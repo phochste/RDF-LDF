@@ -21,7 +21,7 @@ use Data::Dumper;
 use JSON;
 use URI::Template;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 {
 	my $ua	= RDF::Trine->default_useragent;
 	$ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);

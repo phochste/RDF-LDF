@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.05  2015-02-26 21:35:38 CET
   - adding better error handling
   - Catmandu::Error->throw is called but not loaded
   - use RDF::Trine::Parser to load URL contents into a model
