@@ -15,9 +15,7 @@ use RDF::Trine::Error qw(:try);
 sub new {
     my ($class,%opts) = @_;
     my $ref = \%opts;
-    my %args = (url => $ref->{url});
-    $args{ua} = $ref->{ua} if ($ref->{ua});
-    $ref->{ldf} =  RDF::LDF->new(%args);
+    $ref->{ldf} =  RDF::LDF->new( url => $ref->{url});
 
     return undef unless $ref->{ldf}->is_fragment_server;
     
@@ -30,7 +28,7 @@ sub _new_with_string {
 }
 sub _new_with_config {
     my ($class,$cfg) = @_;
-    $class->new(url => $cfg->{url}, ua => $cfg->{ua});
+    $class->new(url => $cfg->{url});
 }
 
 sub get_statements {
