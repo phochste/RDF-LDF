@@ -23,8 +23,8 @@ use URI::Template;
 
 our $VERSION = '0.05';
 {
-	my $ua	= RDF::Trine->default_useragent;
-	$ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);
+   my $ua   = RDF::Trine->default_useragent;
+   $ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);
 }
 
 
@@ -314,10 +314,10 @@ sub _node_as_string {
 # For an BGP triple create a fragment pattern
 sub _parse_triple_pattern {
     my ($self,$triple) = @_;
-    my $subject        = $self->_node_as_string($triple->subject);
-    my $predicate    = $self->_node_as_string($triple->predicate);
-    my $object        = $self->_node_as_string($triple->object);
-    my $hash        = {
+    my $subject   = $self->_node_as_string($triple->subject);
+    my $predicate = $self->_node_as_string($triple->predicate);
+    my $object    = $self->_node_as_string($triple->object);
+    my $hash      = {
         subject   => $subject ,
         predicate => $predicate,
         object    => $object
@@ -392,9 +392,9 @@ sub get_statements {
     return undef unless defined $pattern;
     
     my %params;
-    $params{ $pattern->{rdf_subject} }        = $subject if is_string($subject);
-    $params{ $pattern->{rdf_predicate} }    = $predicate if is_string($predicate);
-    $params{ $pattern->{rdf_object} }        = $object if is_string($object);
+    $params{ $pattern->{rdf_subject} }   = $subject if is_string($subject);
+    $params{ $pattern->{rdf_predicate} } = $predicate if is_string($predicate);
+    $params{ $pattern->{rdf_object} }    = $object if is_string($object);
     
     my $template    = URI::Template->new($pattern->{void_uriLookupEndpoint});
     my $url            = $template->process(%params)->as_string;
@@ -506,7 +506,7 @@ sub _model_metadata {
         'http://www.w3.org/ns/hydra/core#property' ,
         'http://www.w3.org/ns/hydra/core#mapping'  ,
         'http://www.w3.org/ns/hydra/core#template' ,
-        'http://www.w3.org/ns/hydra/core#membe'    ,
+        'http://www.w3.org/ns/hydra/core#member'   ,
     ) {
         $self->_build_metadata($model, {
             predicate => RDF::Trine::Node::Resource->new($predicate)
