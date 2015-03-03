@@ -2,6 +2,7 @@ Revision history for RDF::LDF
 
 {{$NEXT}}
   - Update requirements for HTTP::Message
+  - Fixing Error and Moo conflict
 
 0.05  2015-02-26 21:35:38 CET
   - adding better error handling

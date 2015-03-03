@@ -30,7 +30,7 @@ ok $info , 'got ldf metadata';
 
 ok $info->{void_triples}  , 'got lotsa triples';
 
-throws_ok { $client->get_pattern() } 'RDF::Trine::Error::MethodInvocationError' , 'throws on empty pattern';
+throws_ok { $client->get_pattern() } 'RDF::LDF::Error' , 'throws on empty pattern';
 
 done_testing;
 

@@ -20,13 +20,13 @@ use Clone qw(clone);
 use Data::Dumper;
 use JSON;
 use URI::Template;
+use RDF::LDF::Error;
 
 our $VERSION = '0.05';
 {
    my $ua   = RDF::Trine->default_useragent;
    $ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);
 }
-
 
 has url => (
     is => 'ro' ,
@@ -77,7 +77,7 @@ sub get_pattern {
     my ($self,$bgp,$context,%args) = @_;
 
     unless (defined $bgp) {
-        throw RDF::Trine::Error::MethodInvocationError -text => "can't execute get_pattern for an empty pattern";
+       RDF::LDF::Error->throw(text => "can't execute get_pattern for an empty pattern");
     }
 
     my (@triples)   = ($bgp->isa('RDF::Trine::Statement') or $bgp->isa('RDF::Query::Algebra::Filter'))
@@ -85,7 +85,7 @@ sub get_pattern {
                     : $bgp->triples;
 
     unless (@triples) {
-        throw RDF::Trine::Error::MethodInvocationError -text => "can't execute get_pattern for an empty pattern";
+        RDF::LDF::Error->throw(text => "can't execute get_pattern for an empty pattern");
     }
 
     my @vars = $bgp->referenced_variables;
