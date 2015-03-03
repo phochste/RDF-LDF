@@ -43,7 +43,7 @@
             "Data::Util" : "0.63",
             "File::Slurp" : "9999.19",
             "Getopt::Long" : "2.44",
-            "HTTP::Request::Common" : "6.06",
+            "HTTP::Message" : "6.06",
             "JSON" : "2.90",
             "Log::Any" : "1.03",
             "Moo" : "1.004006",

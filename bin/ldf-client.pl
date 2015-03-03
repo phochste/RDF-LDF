@@ -52,15 +52,17 @@ sub process_fragments {
     my $it = $client->get_statements($subject,$predicate,$object);
 
     print "[\n";
-    while (my $st = $it->()) {
-        my %triple = ();
-        tie %triple , 'Tie::IxHash';
+    if ($it) {
+        while (my $st = $it->()) {
+            my %triple = ();
+            tie %triple , 'Tie::IxHash';
 
-        $triple{subject}   = $st->subject->value;
-        $triple{predicate} = $st->predicate->value;
-        $triple{object}    = $st->object->value;
+            $triple{subject}   = $st->subject->value;
+            $triple{predicate} = $st->predicate->value;
+            $triple{object}    = $st->object->value;
 
-        print encode_json(\%triple), "\n";
+            print encode_json(\%triple), "\n";
+        }
     }
     print "]\n";
 }
@@ -85,7 +87,9 @@ sub process_sparql {
 
     my $iter = $rdf_query->execute($model);
 
-    while (my $s = $iter->next) {
-        print $s . "\n";
+    if ($iter) {
+        while (my $s = $iter->next) {
+            print $s . "\n";
+        }
     }
 }
