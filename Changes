@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.06  2015-03-16 13:10:10 CET
   - Update requirements for HTTP::Message
   - Fixing Error and Moo conflict
 
