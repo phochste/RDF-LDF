@@ -8,7 +8,7 @@ use RDF::Trine::Store::LDF;
 use RDF::Trine::Store;
 use RDF::Query;
 use JSON;
-use File::Slurp;
+use File::Slurp::Tiny qw(read_file);
 use Getopt::Long;
 use Tie::IxHash;
 use JSON;

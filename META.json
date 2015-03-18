@@ -41,7 +41,7 @@
             "Data::Compare" : "1.25",
             "Data::Dumper" : "2.154",
             "Data::Util" : "0.63",
-            "File::Slurp" : "9999.19",
+            "File::Slurp::Tiny" : "0.003",
             "Getopt::Long" : "2.44",
             "HTTP::Message" : "6.06",
             "JSON" : "2.90",

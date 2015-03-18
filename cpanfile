@@ -13,7 +13,7 @@ requires 'Clone', '0.38';
 requires 'Data::Compare', '1.25';
 requires 'Data::Dumper', '2.154';
 requires 'Data::Util', '0.63';
-requires 'File::Slurp', '9999.19';
+requires 'File::Slurp::Tiny', '0.003';
 requires 'Getopt::Long', '2.44';
 requires 'HTTP::Message', '6.06';
 requires 'JSON', '2.90';
