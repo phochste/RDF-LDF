@@ -50,6 +50,7 @@
             "RDF::NS" : "20140910",
             "RDF::Query" : "2.913",
             "RDF::Trine" : "1.013",
+            "Throwable" : "0.200004",
             "Tie::IxHash" : "1.23",
             "URI::Escape" : "1.65",
             "URI::Template" : "0.21",
