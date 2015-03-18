@@ -23,5 +23,6 @@ requires 'RDF::NS', '20140910';
 requires 'RDF::Query', '2.913';
 requires 'RDF::Trine', '1.013';
 requires 'Tie::IxHash', '1.23';
+requires 'Throwable', '0.200004';
 requires 'URI::Escape', '1.65';
 requires 'URI::Template', '0.21';
