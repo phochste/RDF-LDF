@@ -17,7 +17,6 @@ use HTTP::Request::Common;
 use Log::Any ();
 use Cache::LRU;
 use Clone qw(clone);
-use Data::Dumper;
 use JSON;
 use URI::Template;
 use RDF::LDF::Error;
