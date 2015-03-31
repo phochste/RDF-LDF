@@ -1,4 +1,4 @@
-# perl -I lib bin/ldf-client.pl http://data.linkeddatafragments.org/viaf demo/sparql03.txt
+# perl -I lib examples/ldf-client.pl http://data.linkeddatafragments.org/viaf demo/sparql03.txt
 PREFIX schema: <http://schema.org/>
 SELECT * WHERE {
   ?work schema:name ?name;
