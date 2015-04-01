@@ -11,7 +11,6 @@ on 'test', sub {
 requires 'Cache::LRU', '0.04';
 requires 'Clone', '0.38';
 requires 'Data::Compare', '1.25';
-requires 'Data::Dumper', '2.154';
 requires 'Data::Util', '0.63';
 requires 'File::Slurp::Tiny', '0.003';
 requires 'Getopt::Long', '2.44';

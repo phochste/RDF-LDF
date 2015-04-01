@@ -1,9 +1,7 @@
-
 use strict;
 use warnings;
 use Test::More;
 use Test::Exception;
-use Data::Dumper;
 use RDF::Trine qw(statement iri variable);
 use RDF::LDF;
 use Test::LWP::UserAgent;
