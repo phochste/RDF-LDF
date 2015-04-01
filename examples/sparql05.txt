@@ -1,4 +1,4 @@
-# perl -I lib bin/ldf-client.pl  http://fragments.dbpedia.org/2014/en demo/sparql04.txt
+# perl -I lib examples/ldf-client.pl  http://fragments.dbpedia.org/2014/en demo/sparql05.txt
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -9,6 +9,7 @@ PREFIX : <http://dbpedia.org/resource/>
 PREFIX dbpedia2: <http://dbpedia.org/property/>
 PREFIX dbpedia: <http://dbpedia.org/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-SELECT * WHERE {
- 	?musician <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:German_musicians> .
+SELECT * WHERE { 
+	 ?musician <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:German_musicians> .
+     ?musician foaf:name ?name .
 }
