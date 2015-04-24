@@ -11,3 +11,6 @@ MANIFEST*
 META.*
 MYMETA.*
 RDF-LDF-*
+local
+.perl-version
+cpanfile.snapshot
