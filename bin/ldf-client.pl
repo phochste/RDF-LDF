@@ -87,9 +87,28 @@ sub process_sparql {
 
     my $iter = $rdf_query->execute($model);
 
+    print "[\n";
     if ($iter) {
+        my $count = 0;
         while (my $s = $iter->next) {
-            print $s . "\n";
+            my $h = {};
+            for my $v ($s->variables) {
+                my $node = $s->{$v};
+                my $val;
+                if ($node->isa('RDF::Trine::Node::Variable')) {
+                    $val = $node->as_string; # ?foo
+                } elsif ($node->isa('RDF::Trine::Node::Literal')) {
+                    $val = $node->as_string; # includes quotes and any language or datatype
+                    $val =~ s{^"|"$}{}g;
+                } else {
+                    $val = $node->value; # the raw IRI or blank node identifier value, without other syntax
+                }
+                $h->{$v} = $val; 
+            }
+            print (",\n") if ($count++ > 0);
+            print encode_json($h);
         }
+        print "\n";
     }
+    print "]\n";
 }

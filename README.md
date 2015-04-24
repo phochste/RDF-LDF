@@ -33,8 +33,7 @@ RDF::LDF - Linked Data Fragments client
 
 # DESCRIPTION
 
-The RDF::LDF  module is a basic implementation of a Linked Data Fragment client. For details see:
-<http://linkeddatafragments.org/>.
+RDF::LDF implements a basic [Linked Data Fragment](http://linkeddatafragments.org/) client.
 
 This a low level module to implement the Linked Data Fragment protocol. You probably want to
 use [RDF::Trine::Store::LDF](https://metacpan.org/pod/RDF::Trine::Store::LDF).
