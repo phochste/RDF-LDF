@@ -589,6 +589,15 @@ __END__
 
 RDF::LDF - Linked Data Fragments client
 
+=begin markdown
+
+# STATUS
+[![Build Status](https://travis-ci.org/phochste/RDF-LDF.png)](https://travis-ci.org/phochste/RDF-LDF)
+[![Coverage Status](https://coveralls.io/repos/phochste/RDF-LDF/badge.png)](https://coveralls.io/r/phochste/RDF-LDF)
+[![Kwalitee Score](http://cpants.cpanauthors.org/dist/RDF-LDF.png)](http://cpants.cpanauthors.org/dist/RDF-LDF)
+
+=end markdown
+
 =head1 SYNOPSIS
 
     use RDF::Trine::Store::LDF;

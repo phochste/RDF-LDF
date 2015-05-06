@@ -16,6 +16,7 @@ requires 'File::Slurp::Tiny', '0.003';
 requires 'Getopt::Long', '2.44';
 requires 'HTTP::Message', '6.06';
 requires 'JSON', '2.90';
+requires 'LWP','0';
 requires 'Log::Any', '1.03';
 requires 'Moo', '1.004006';
 requires 'RDF::NS', '20140910';
