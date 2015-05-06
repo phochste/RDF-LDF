@@ -1,0 +1,22 @@
+language: perl
+perl:
+    - "5.20"
+    - "5.18"
+    - "5.16"
+
+install:
+    - cpanm --quiet --notest --skip-satisfied Dist::Milla
+    - cpanm --installdeps .
+
+# fix https://github.com/miyagawa/cpanminus/issues/412    
+before_install:
+    - cpanm -nq Pod::Readme
+
+# full release test
+script:
+    - milla smoke --release --author
+
+# normal tests and report test coverage to coveralls.io
+after_success:
+    - cpanm --quiet --notest --skip-satisfied Devel::Cover::Report::Coveralls
+    - perl Build.PL && ./Build build && cover -test -report coveralls
