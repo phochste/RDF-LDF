@@ -660,12 +660,9 @@ Gregory Todd Williams, C<< greg@evilfunhouse.com >>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright Patrick Hochstenbach, 2015-
+This software is copyright (c) 2015 by Patrick Hochstenbach.
 
-This program is free software; you can redistribute it and/or modify it under the terms of either: 
-the GNU General Public License as published by the Free Software Foundation; or the Artistic License.
-
-See L<http://dev.perl.org/licenses/> for more information.
+This is free software; you can redistribute it and/or modify it under the same terms as the Perl 5 programming language system itself.
 
 =encoding utf8
 
