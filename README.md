@@ -2,6 +2,9 @@
 
 RDF::LDF - Linked Data Fragments client
 
+# STATUS
+[![Build Status](https://travis-ci.org/phochste/RDF-LDF.png)](https://travis-ci.org/phochste/RDF-LDF)
+
 # SYNOPSIS
 
     use RDF::Trine::Store::LDF;
