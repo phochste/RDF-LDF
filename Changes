@@ -1,6 +1,7 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+  - Minor fixed in build scripts
 
 0.08  2015-04-24 09:53:02 CEST
   - Fixing command line creating JSON as output
