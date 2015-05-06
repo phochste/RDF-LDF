@@ -658,7 +658,9 @@ Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
 
 Gregory Todd Williams, C<< greg@evilfunhouse.com >>
 
-=head1 LICENSE
+=head1 COPYRIGHT AND LICENSE
+
+Copyright Patrick Hochstenbach, 2015-
 
 This program is free software; you can redistribute it and/or modify it under the terms of either: 
 the GNU General Public License as published by the Free Software Foundation; or the Artistic License.
