@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.10  2015-05-21 10:18:52 CEST
   - Deleting some dependencies
 
 0.09  2015-05-06 13:03:50 CEST
