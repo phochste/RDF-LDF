@@ -1,6 +1,7 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+  - Deleting some dependencies
 
 0.09  2015-05-06 13:03:50 CEST
   - Minor fixed in build scripts

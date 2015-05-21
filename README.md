@@ -59,13 +59,13 @@ use [RDF::Trine::Store::LDF](https://metacpan.org/pod/RDF::Trine::Store::LDF).
 
     Returns a stream object of all bindings matching the specified graph pattern.
 
-# AUTHOR
+# CONTRIBUTORS
 
 Patrick Hochstenbach, `patrick.hochstenbach at ugent.be`
 
-# CONTRIBUTORS
-
 Gregory Todd Williams, `greg@evilfunhouse.com`
+
+Jacob Voss, `<voss@gbv.de`>
 
 # COPYRIGHT AND LICENSE
 
