@@ -1,7 +1,7 @@
 {
    "abstract" : "Linked Data Fragments client",
    "author" : [
-      "Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>"
+      "Patrick Hochstenbach"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Dist::Zilla version 5.035, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150001",
@@ -41,18 +41,15 @@
             "Clone" : "0.38",
             "Data::Compare" : "1.25",
             "Data::Util" : "0.63",
-            "File::Slurp::Tiny" : "0.003",
             "Getopt::Long" : "2.44",
             "HTTP::Message" : "6.06",
             "JSON" : "2.90",
-            "LWP" : "0",
             "Log::Any" : "1.03",
             "Moo" : "1.004006",
             "RDF::NS" : "20140910",
             "RDF::Query" : "2.913",
             "RDF::Trine" : "1.013",
             "Throwable" : "0.200004",
-            "Tie::IxHash" : "1.23",
             "URI::Escape" : "1.65",
             "URI::Template" : "0.21",
             "perl" : "v5.10.1"
