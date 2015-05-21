@@ -7,11 +7,11 @@ use RDF::LDF;
 use RDF::Trine::Store::LDF;
 use RDF::Trine::Store;
 use RDF::Query;
-use JSON;
-use File::Slurp::Tiny qw(read_file);
 use Getopt::Long;
-use Tie::IxHash;
-use JSON;
+
+use JSON ();
+my $JSON = JSON->new->utf8->allow_nonref;
+sub encode_json { $JSON->encode(@_) }
 
 my ($subject,$predicate,$object);
 
@@ -54,14 +54,10 @@ sub process_fragments {
     print "[\n";
     if ($it) {
         while (my $st = $it->()) {
-            my %triple = ();
-            tie %triple , 'Tie::IxHash';
-
-            $triple{subject}   = $st->subject->value;
-            $triple{predicate} = $st->predicate->value;
-            $triple{object}    = $st->object->value;
-
-            print encode_json(\%triple), "\n";
+            printf "{\"subject\":%s,\"predicate\":%s,\"object\":%s}\n",
+                encode_json($st->subject->value),
+                encode_json($st->predicate->value),
+                encode_json($st->object->value);
         }
     }
     print "]\n";
@@ -69,7 +65,7 @@ sub process_fragments {
 
 sub process_sparql {
     my $sparql = shift;
-    $sparql = read_file($sparql) if -r $sparql;
+    $sparql = do { local (@ARGV,$/) = $sparql; <> } if -r $sparql;
 
     my $store = RDF::Trine::Store->new_with_config({
             storetype => 'LDF',
