@@ -659,13 +659,13 @@ Returns a stream object of all bindings matching the specified graph pattern.
 
 =back
 
-=head1 AUTHOR
+=head1 CONTRIBUTORS
 
 Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
 
-=head1 CONTRIBUTORS
-
 Gregory Todd Williams, C<< greg@evilfunhouse.com >>
+
+Jacob Voss, C<<voss@gbv.de>>
 
 =head1 COPYRIGHT AND LICENSE
 
