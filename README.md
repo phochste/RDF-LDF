@@ -65,7 +65,7 @@ Patrick Hochstenbach, `patrick.hochstenbach at ugent.be`
 
 Gregory Todd Williams, `greg@evilfunhouse.com`
 
-Jacob Voss, `<voss@gbv.de`>
+Jacob Voss, `voss@gbv.de`
 
 # COPYRIGHT AND LICENSE
 
