@@ -46,7 +46,7 @@
             "JSON" : "0",
             "Log::Any" : "1.00",
             "Moo" : "1.004006",
-            "RDF::NS" : "0",
+            "RDF::NS" : "20120827",
             "RDF::Query" : "2.913",
             "RDF::Trine" : "1.013",
             "Throwable" : "0.102080",
@@ -77,9 +77,10 @@
          "web" : "https://github.com/phochste/RDF-LDF"
       }
    },
-   "version" : "0.11",
+   "version" : "0.12",
    "x_contributors" : [
       "Gregory Todd Williams <greg@evilfunhouse.com>",
+      "Jakob Voß <jakob@nichtich.de>",
       "Jakob Voss <voss@gbv.de>",
       "Patrick Hochstenbach <patrick.hochstenbach@ugent.be>"
    ]

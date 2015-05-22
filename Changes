@@ -2,6 +2,9 @@ Revision history for RDF::LDF
 
 {{$NEXT}}
 
+0.12  2015-05-22 09:54:00 CEST
+  - Requiring minimal RDF::NS for the REVERSE method
+
 0.11  2015-05-22 09:32:21 CEST
   - Downgrading Perl dependencies
 
