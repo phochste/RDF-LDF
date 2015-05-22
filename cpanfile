@@ -10,16 +10,20 @@ on 'test', sub {
 
 requires 'Cache::LRU', '0';
 requires 'Clone', '0';
-requires 'Data::Compare', '1.22';
-requires 'Data::Util', '0.59';
+requires 'Data::Compare', '0';
+requires 'Data::Util', '0';
 requires 'Getopt::Long', '0';
 requires 'HTTP::Message', '0';
 requires 'JSON', '0';
 requires 'Log::Any', '1.00';
-requires 'Moo', '1.004006';
+requires 'Moo', '0';
 requires 'RDF::NS', '20120827';
-requires 'RDF::Query', '2.913';
-requires 'RDF::Trine', '1.013';
-requires 'Throwable', '0.102080';
+requires 'RDF::Query', '0';
+requires 'RDF::Trine', '0';
+requires 'Throwable', '0';
 requires 'URI::Escape', '0';
 requires 'URI::Template', '0';
+
+recommends 'Moo', '1.004006';
+recommends 'RDF::Query', '2.913';
+recommends 'RDF::Trine', '1.013';
