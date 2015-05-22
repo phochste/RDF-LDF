@@ -17,7 +17,7 @@ requires 'HTTP::Message', '0';
 requires 'JSON', '0';
 requires 'Log::Any', '1.00';
 requires 'Moo', '1.004006';
-requires 'RDF::NS', '0';
+requires 'RDF::NS', '20120827';
 requires 'RDF::Query', '2.913';
 requires 'RDF::Trine', '1.013';
 requires 'Throwable', '0.102080';
