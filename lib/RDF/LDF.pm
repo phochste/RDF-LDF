@@ -665,7 +665,7 @@ Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
 
 Gregory Todd Williams, C<< greg@evilfunhouse.com >>
 
-Jacob Voss, C<<voss@gbv.de>>
+Jacob Voss, C<< voss@gbv.de >>
 
 =head1 COPYRIGHT AND LICENSE
 
