@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.13  2015-05-27 09:27:30 CEST
   - Fixing utf8 problem
 
 0.12  2015-05-22 09:54:00 CEST
