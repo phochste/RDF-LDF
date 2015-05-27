@@ -466,7 +466,6 @@ sub get_fragment {
     
     if ($@) {
         $self->log->error("failed to parse input");
-        return undef;
     }
     
     return $model;
