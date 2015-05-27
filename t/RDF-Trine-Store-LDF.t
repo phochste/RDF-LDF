@@ -4,6 +4,8 @@ use Test::More;
 use Test::Exception;
 use RDF::Trine::Store;
 
+use utf8;
+
 my $pkg;
 BEGIN {
     $pkg = 'RDF::Trine::Store::LDF';
@@ -178,9 +180,7 @@ PREFIX dbpedia: <http://dbpedia.org/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT *
 WHERE {
-   ?p a <http://dbpedia.org/ontology/Artist> .
-   ?p <http://dbpedia.org/ontology/birthPlace> ?c .
-   ?c <http://xmlns.com/foaf/0.1/name> "York"\@en .
+   <http://dbpedia.org/resource/François_Schuiten> ?p <http://dbpedia.org/ontology/ComicsCreator> .
 }
 EOF
 
@@ -193,7 +193,6 @@ EOF
 		ok $binding , 'got a binding';
 
 		ok $binding->{'p'};
-		ok $binding->{'c'};
 
 		ok !defined($it->next()) , 'got only one result';
 	}

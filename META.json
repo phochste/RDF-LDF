@@ -36,20 +36,26 @@
          }
       },
       "runtime" : {
+         "recommends" : {
+            "Log::Any" : "1.00",
+            "Moo" : "1.004006",
+            "RDF::Query" : "2.913",
+            "RDF::Trine" : "1.013"
+         },
          "requires" : {
             "Cache::LRU" : "0",
             "Clone" : "0",
-            "Data::Compare" : "1.22",
-            "Data::Util" : "0.59",
+            "Data::Compare" : "0",
+            "Data::Util" : "0",
             "Getopt::Long" : "0",
             "HTTP::Message" : "0",
             "JSON" : "0",
-            "Log::Any" : "1.00",
-            "Moo" : "1.004006",
+            "Log::Any" : "0",
+            "Moo" : "0",
             "RDF::NS" : "20120827",
-            "RDF::Query" : "2.913",
-            "RDF::Trine" : "1.013",
-            "Throwable" : "0.102080",
+            "RDF::Query" : "0",
+            "RDF::Trine" : "0",
+            "Throwable" : "0",
             "URI::Escape" : "0",
             "URI::Template" : "0",
             "perl" : "v5.10.1"
@@ -77,7 +83,7 @@
          "web" : "https://github.com/phochste/RDF-LDF"
       }
    },
-   "version" : "0.12",
+   "version" : "0.13",
    "x_contributors" : [
       "Gregory Todd Williams <greg@evilfunhouse.com>",
       "Jakob Voß <jakob@nichtich.de>",

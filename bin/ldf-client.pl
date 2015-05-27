@@ -8,6 +8,7 @@ use RDF::Trine::Store::LDF;
 use RDF::Trine::Store;
 use RDF::Query;
 use Getopt::Long;
+use open qw(:utf8);
 
 use JSON ();
 my $JSON = JSON->new->utf8->allow_nonref;
@@ -35,8 +36,6 @@ options:
 EOF
     exit(1);
 }
-
-binmode(STDOUT,":encoding(UTF-8)");
 
 if (defined $sparql) {
     process_sparql($sparql);
