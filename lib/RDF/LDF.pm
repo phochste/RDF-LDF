@@ -381,10 +381,10 @@ sub get_statements {
         $object    = $triple[0]->{object};
     }
 
-    $subject    = $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
-    $predicate    = $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
+    $subject   = $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
+    $predicate = $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
     if (is_invocant($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
-        $object    = ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
+        $object = ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
     }
     
     my $pattern = $self->query_pattern;
@@ -394,9 +394,9 @@ sub get_statements {
     $params{ $pattern->{rdf_subject} }   = $subject if is_string($subject);
     $params{ $pattern->{rdf_predicate} } = $predicate if is_string($predicate);
     $params{ $pattern->{rdf_object} }    = $object if is_string($object);
-    
-    my $template    = URI::Template->new($pattern->{void_uriLookupEndpoint});
-    my $url            = $template->process(%params)->as_string;
+
+    my $template  = URI::Template->new($pattern->{void_uriLookupEndpoint});
+    my $url       = $template->process(%params)->as_string;
 
     my $sub = sub {
         state $model;
@@ -459,7 +459,7 @@ sub get_fragment {
 
     $self->log->info("fetching: $url");
 
-    my $model  = RDF::Trine::Model->temporary_model;
+    my $model = RDF::Trine::Model->temporary_model;
     eval {
         RDF::Trine::Parser->parse_url_into_model($url, $model);
     };

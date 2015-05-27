@@ -8,13 +8,17 @@ use RDF::Trine::Store::LDF;
 use RDF::Trine::Store;
 use RDF::Query;
 use Getopt::Long;
-use open qw(:utf8);
+use utf8;
+use open ':encoding(utf8)';
+use Encode;
 
 use JSON ();
 my $JSON = JSON->new->utf8->allow_nonref;
 sub encode_json { $JSON->encode(@_) }
 
 my ($subject,$predicate,$object);
+
+@ARGV = map { Encode::decode('UTF-8', $_) } @ARGV;
 
 GetOptions("subject=s" => \$subject , "predicate=s" => \$predicate , "object=s" => \$object);
 

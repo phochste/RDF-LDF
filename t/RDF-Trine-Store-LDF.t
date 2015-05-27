@@ -3,7 +3,6 @@ use warnings;
 use Test::More;
 use Test::Exception;
 use RDF::Trine::Store;
-
 use utf8;
 
 my $pkg;
