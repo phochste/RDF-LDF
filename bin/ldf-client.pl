@@ -3,13 +3,13 @@ $|++;
 
 use strict;
 
+use open ':std', ':encoding(utf8)';
 use RDF::LDF;
 use RDF::Trine::Store::LDF;
 use RDF::Trine::Store;
 use RDF::Query;
 use Getopt::Long;
 use utf8;
-use open ':encoding(utf8)';
 use Encode;
 
 use JSON ();
