@@ -1,3 +1,4 @@
+use open ':std', ':encoding(utf8)';
 use strict;
 use warnings;
 use Test::More;

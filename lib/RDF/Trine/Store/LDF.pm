@@ -118,7 +118,7 @@ RDF::Trine::Store::LDF - RDF Store proxy for a Linked Data Fragment endpoint
 
     while (my $s = $iter->next) {
         # $s is a RDF::Trine::VariableBinding
-        print $s . "\n";
+        print $s->value . "\n";
     }
 
 =head1 DESCRIPTION

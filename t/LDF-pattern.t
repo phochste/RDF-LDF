@@ -1,3 +1,4 @@
+use open ':std', ':encoding(utf8)';
 use strict;
 use warnings;
 use Test::More;
@@ -5,6 +6,7 @@ use Test::Exception;
 use RDF::Trine qw(statement iri variable);
 use RDF::LDF;
 use Test::LWP::UserAgent;
+use utf8;
 
 RDF::Trine->default_useragent(user_agent());
 
@@ -23,6 +25,18 @@ ok $client->is_fragment_server , 'this server is a ldf server';
 	my $s		= $r->{'s'};
 	isa_ok $s, 'RDF::Trine::Node::Resource', 'expected subject IRI';
 	is $s->value, 'http://dbpedia.org/resource/Agusti_Pol', 'expected subject IRI value';
+}
+
+{
+	note("single triple pattern utf8");
+	my $triple	= statement(variable('s'), iri('http://xmlns.com/foaf/0.1/name'), variable('name'));
+	my $iter	= $client->get_pattern($triple);
+	isa_ok $iter, 'RDF::Trine::Iterator::Bindings', 'iterator for get_pattern';
+	my $r		= $iter->next;
+	isa_ok $r, 'RDF::Trine::VariableBindings', 'result object';
+	my $s		= $r->{'s'};
+	isa_ok $s, 'RDF::Trine::Node::Resource', 'expected subject IRI';
+	is $s->value, 'http://dbpedia.org/resource/François_Schuiten', 'expected subject IRI value';
 }
 
 {
@@ -121,9 +135,19 @@ END
 <$url> hydra:nextPage <$next> .
 END
 	}
+	
 	$ua->map_response(
 		qr{^\Q$url\E$},
-		HTTP::Response->new('200', 'OK', ['Content-Type' => 'text/plain'], $NS . $META . $FRAGMENT . $content));
+		HTTP::Response->new(
+				'200', 
+				'OK', 
+				['Content-Type' => 'text/turtle;charset=utf-8'], 
+				Encode::encode_utf8($NS) . 
+				Encode::encode_utf8($META) . 
+				Encode::encode_utf8($FRAGMENT) . 
+				Encode::encode_utf8($content)
+				)
+		);
 }
 
 sub user_agent {
@@ -140,12 +164,14 @@ END
 
 	# ?s foaf:name ?name (page 1)
 	my $names	= <<'END';
+dbpedia:François_Schuiten foaf:name "François Schuiten" .
 <http://dbpedia.org/resource/4th_arrondissement_of_Marseille> foaf:name "4th arrondissement of Marseille"@en .
 <http://dbpedia.org/resource/4th_arrondissement_of_Paris> foaf:name "4th arrondissement of Paris"@en .
 <http://dbpedia.org/resource/4th_arrondissement_of_Porto-Novo> foaf:name "4th arrondissement of Porto-Novo"@en .
 <http://dbpedia.org/resource/4th_arrondissement_of_the_Littoral_Department> foaf:name "4th arrondissement"@en .
 <http://dbpedia.org/resource/4th_municipality_of_Naples> foaf:name "Fourth Municipality of Naples"@en, "Municipalità 4"@en, "Quarta  Municipalità"@en .
 END
+
 	add_fragment_response($ua, 'http://example.org/2014/en?test=1&subject=%3Fs&predicate=http%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2Fname&object=%3Fname', $names, 7, 'http://example.org/2014/en?test=1&subject=%3Fs&predicate=http%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2Fname&object=%3Fname&page=2');
 
 	# ?s foaf:name ?name (page 2)
