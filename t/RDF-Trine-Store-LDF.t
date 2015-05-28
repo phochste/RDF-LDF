@@ -1,3 +1,4 @@
+use open ':std', ':encoding(utf8)';
 use strict;
 use warnings;
 use Test::More;
@@ -193,6 +194,40 @@ EOF
 		ok $binding , 'got a binding';
 
 		ok $binding->{'p'};
+
+		ok !defined($it->next()) , 'got only one result';
+	}
+
+	{
+		my $sparql =<<EOF;
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX : <http://dbpedia.org/resource/>
+PREFIX dbpedia2: <http://dbpedia.org/property/>
+PREFIX dbpedia: <http://dbpedia.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT *
+WHERE {
+   <http://dbpedia.org/resource/François_Schuiten> <http://www.w3.org/2000/01/rdf-schema#label> ?o .
+}
+LIMIT 1
+EOF
+
+		my $it = get_sparql($model,$sparql);
+
+		ok $it , 'got an iterator';
+
+		my $binding = $it->();
+
+		ok $binding , 'got a binding';
+
+		ok $binding->{'o'};
+
+		like $binding->{'o'}->value , qr/François Schuiten/ , 'got utf8 value';
 
 		ok !defined($it->next()) , 'got only one result';
 	}

@@ -1,6 +1,7 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+  - Provide better UTF8 tests and updated the documentation
 
 0.14  2015-05-27 11:37:24 CEST
   - Make LDF parser more forgiving for UTF-8 errors in the http response
