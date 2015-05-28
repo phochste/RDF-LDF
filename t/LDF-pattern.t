@@ -6,6 +6,7 @@ use Test::Exception;
 use RDF::Trine qw(statement iri variable);
 use RDF::LDF;
 use Test::LWP::UserAgent;
+use Encode;
 use utf8;
 
 RDF::Trine->default_useragent(user_agent());
