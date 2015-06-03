@@ -59,8 +59,8 @@ has log => (
 # Public method
 sub is_fragment_server {
     my $self = shift;
-    my $url  = $self->url;
-    for my $part (split(/\s+/,$url)) {
+    my $federated  = ref($self->url) ? $self->url : [ $self->url ];
+    for my $part (@$federated) {
         return 0 unless $self->get_query_pattern($part);
     }
     return 1;
@@ -386,10 +386,10 @@ sub get_statements {
     }
   
     # Do a federated search over all the URLs provided 
-    my $url = $self->url;
+    my $parts  = ref($self->url) ? $self->url : [ $self->url ];
     my @federated;
 
-    for my $part (split(/\s+/,$url)) {
+    for my $part (@$parts) {
         my $pattern = $self->get_query_pattern($part);
         return undef unless defined $pattern;
     
@@ -654,7 +654,7 @@ use L<RDF::Trine::Store::LDF>.
 
 URL to retrieve RDF from. 
 
-Experimental: more than one URL can be provided separated by a space for federated searches
+Experimental: more than one URL can be provided for federated search over many LDF endpoints.
 
 =back
 

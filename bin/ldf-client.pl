@@ -53,7 +53,7 @@ else {
 sub process_fragments {
     my ($subject,$predicate,$object) = @_;
 
-    my $client = RDF::LDF->new(url => $url);
+    my $client = RDF::LDF->new(url => [split(/\s+/,$url)]);
     my $it = $client->get_statements($subject,$predicate,$object);
 
     print "[\n";
@@ -74,7 +74,7 @@ sub process_sparql {
 
     my $store = RDF::Trine::Store->new_with_config({
             storetype => 'LDF',
-            url => $url
+            url => [split(/\s+/,$url)]
     });
 
     my $model =  RDF::Trine::Model->new($store);
