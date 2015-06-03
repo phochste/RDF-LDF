@@ -3,7 +3,6 @@ $|++;
 
 use strict;
 
-use open ':std', ':encoding(utf8)';
 use RDF::LDF;
 use RDF::Trine::Store::LDF;
 use RDF::Trine::Store;
@@ -31,6 +30,9 @@ usage: $0 url sparql
 
 usage: $0 [options] url
 
+where:
+    url - an LDF endpoint or a space delimited list of multiple LDF endpoints
+    
 options:
 
    --subject=<.>

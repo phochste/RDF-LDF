@@ -47,7 +47,9 @@ use [RDF::Trine::Store::LDF](https://metacpan.org/pod/RDF::Trine::Store::LDF).
 
 - url
 
-    URL to retrieve RDF from.
+    URL to retrieve RDF from. 
+
+    Experimental: more than one URL can be provided separated by a space for federated searches
 
 # METHODS
 

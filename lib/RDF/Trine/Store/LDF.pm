@@ -137,6 +137,9 @@ Beyond the methods documented below, this class inherits methods from the L<RDF:
 Returns a new RDF::Trine::Store object that will act as a proxy for the Linked Data Fragment
 endpoint accessible via the supplied $url.
 
+Expertimental: more than one url can be provided seperated by a space to do a federated 
+query over many LDF endpoint.
+
 =item new_with_config( $hashref )
 
 Returns a new RDF::Trine::Store object configured by a hashref with the url as required key.

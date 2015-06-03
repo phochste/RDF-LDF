@@ -40,12 +40,6 @@ has sn => (
     }
 );
 
-has query_pattern => (
-    is      => 'ro',
-    lazy    => 1,
-    builder => 'get_query_pattern'
-);
-
 has lru => (
     is     => 'ro' ,
     lazy   => 1,
@@ -64,7 +58,12 @@ has log => (
 
 # Public method
 sub is_fragment_server {
-    shift->query_pattern ? 1 : 0;
+    my $self = shift;
+    my $url  = $self->url;
+    for my $part (split(/\s+/,$url)) {
+        return 0 unless $self->get_query_pattern($part);
+    }
+    return 1;
 }
 
 # Public method
@@ -333,8 +332,7 @@ sub _parse_triple_pattern {
 #   void_uriLookupEndpoint => <endpoint_for_tripple_pattern>
 # }
 sub get_query_pattern {
-    my ($self) = @_;
-    my $url      = $self->url;
+    my ($self,$url) = @_;
 
     my $fragment = $self->get_model_and_info($url);
 
@@ -386,42 +384,56 @@ sub get_statements {
     if (is_invocant($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
         $object = ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
     }
-    
-    my $pattern = $self->query_pattern;
-    return undef unless defined $pattern;
-    
-    my %params;
-    $params{ $pattern->{rdf_subject} }   = $subject if is_string($subject);
-    $params{ $pattern->{rdf_predicate} } = $predicate if is_string($predicate);
-    $params{ $pattern->{rdf_object} }    = $object if is_string($object);
+  
+    # Do a federated search over all the URLs provided 
+    my $url = $self->url;
+    my @federated;
 
-    my $template  = URI::Template->new($pattern->{void_uriLookupEndpoint});
-    my $url       = $template->process(%params)->as_string;
+    for my $part (split(/\s+/,$url)) {
+        my $pattern = $self->get_query_pattern($part);
+        return undef unless defined $pattern;
+    
+        my %params;
+        $params{ $pattern->{rdf_subject} }   = $subject if is_string($subject);
+        $params{ $pattern->{rdf_predicate} } = $predicate if is_string($predicate);
+        $params{ $pattern->{rdf_object} }    = $object if is_string($object);
+
+        my $template  = URI::Template->new($pattern->{void_uriLookupEndpoint});
+        push @federated , $template->process(%params)->as_string;
+    }
 
     my $sub = sub {
         state $model;
         state $info;
         state $iterator;
+        state $url = shift(@federated);
 
-        unless (defined $model) {
-            return unless defined $url;
+        my $triple;
 
-            my $fragment = $self->get_model_and_info($url);
+        do {
+            unless (defined $model) {
+                # When no more result pages are available switch
+                # to the next federated url...
+                return unless defined($url) || defined($url = pop(@federated));
 
-            return unless defined $fragment->{model};
+                my $fragment = $self->get_model_and_info($url);
 
-            $model    = $fragment->{model};
-            $info     = $fragment->{info};
+                return unless defined $fragment->{model};
 
-            $url      = $info->{hydra_nextPage};
-            $iterator = $model->get_statements;
+                $model    = $fragment->{model};
+                $info     = $fragment->{info};
+
+                $url      = $info->{hydra_nextPage};
+                $iterator = $model->get_statements;
+            }
+
+            $triple = $iterator->next;
+
+            unless ($iterator->peek) {
+                $model = undef;
+            }
         }
-
-        my $triple = $iterator->next;
-
-        unless ($iterator->peek) {
-            $model = undef;
-        }
+        while (!defined $triple && defined($url = pop(@federated)));
 
         wantarray ? ($triple,$info) : $triple;
     };
@@ -640,7 +652,9 @@ use L<RDF::Trine::Store::LDF>.
 
 =item url
 
-URL to retrieve RDF from.
+URL to retrieve RDF from. 
+
+Experimental: more than one URL can be provided separated by a space for federated searches
 
 =back
 
