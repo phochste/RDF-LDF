@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.15  2015-06-24 16:04:14 CEST
   - Provide better UTF8 tests and updated the documentation
   - Add support for federated queries 
 
