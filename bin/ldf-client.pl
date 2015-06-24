@@ -32,6 +32,7 @@ usage: $0 [options] url
 
 where:
     url - an LDF endpoint or a space delimited list of multiple LDF endpoints
+          (for an federated query)
     
 options:
 
