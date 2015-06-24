@@ -656,6 +656,15 @@ URL to retrieve RDF from.
 
 Experimental: more than one URL can be provided for federated search over many LDF endpoints.
 
+    my $store = RDF::Trine::Store->new_with_config({
+            storetype => 'LDF',
+            url => [ $url1, $url2, $url3 ]
+    });    
+
+    # or
+
+    my $client = RDF::LDF->new(url => [ $url1, $url2, $url3 ]);
+
 =back
 
 =head1 METHODS
