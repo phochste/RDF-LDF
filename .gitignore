@@ -7,7 +7,6 @@ blib
 Build
 LICENSE
 Makefile.PL
-MANIFEST*
 META.*
 MYMETA.*
 RDF-LDF-*
