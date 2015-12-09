@@ -471,13 +471,9 @@ sub get_fragment {
 
     $self->log->info("fetching: $url");
 
-    my $ua = LWP::UserAgent->new;
-    $ua->agent("RDF-LDF/$VERSION");
-    $ua->default_header('Accept' => 'text/turtle;q=1.0,application/turtle;q=1.0,application/x-turtle;q=1.0,application/rdf+xml;q=0.9,text/x-nquads;q=0.9,application/json;q=0.7,application/x-rdf+json;q=0.7');
-
     my $model = RDF::Trine::Model->temporary_model;
     eval {
-        RDF::Trine::Parser->parse_url_into_model($url, $model, useragent => $ua);
+        RDF::Trine::Parser->parse_url_into_model($url, $model);
     };
     
     if ($@) {
