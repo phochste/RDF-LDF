@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.16  2015-12-10 09:38:40 CET
   - Fix missing JSON-LD support bug
   
 0.15  2015-06-24 16:04:14 CEST
