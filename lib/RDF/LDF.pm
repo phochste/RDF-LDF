@@ -472,6 +472,11 @@ sub get_fragment {
     $self->log->info("fetching: $url");
 
     my $model = RDF::Trine::Model->temporary_model;
+    
+    # JSON support in RDF::Trine isn't JSON-LD
+    # Set the accept header quality parameter at a minimum for this format
+    RDF::Trine->default_useragent->default_header('Accept','text/turtle;q=1.0,application/turtle;q=1.0,application/x-turtle;q=1.0,application/rdf+xml;q=0.9,text/x-nquads;q=0.9,application/json;q=0.1,application/x-rdf+json;q=0.1');
+
     eval {
         RDF::Trine::Parser->parse_url_into_model($url, $model);
     };
