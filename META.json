@@ -52,7 +52,7 @@
             "JSON" : "0",
             "Log::Any" : "0",
             "Moo" : "0",
-            "RDF::NS" : "20120827",
+            "RDF::NS" : "20150725",
             "RDF::Query" : "0",
             "RDF::Trine" : "0",
             "Throwable" : "0",

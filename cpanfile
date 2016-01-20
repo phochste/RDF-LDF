@@ -19,8 +19,7 @@ requires 'JSON', 0;
 requires 'Log::Any', 0;
 requires 'Moo', 0;
 
-# Starting from 20120827 we get ->REVERSE
-requires 'RDF::NS', '20120827';
+requires 'RDF::NS', '20150725';
 
 requires 'RDF::Query', 0;
 requires 'RDF::Trine', 0;
