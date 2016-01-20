@@ -121,7 +121,7 @@ sub _find_variable_bindings {
 
         my $ret;
 
-        # Loop over all variabe bindinfgs with multiple matches
+        # Loop over all variabe bindings with multiple matches
         while (!defined($ret = $results->())) {
             unless (defined $it) {
                 # Find the an binding iterator for the best pattern from $bgpgs
