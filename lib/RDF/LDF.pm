@@ -6,7 +6,6 @@ use feature qw(state);
 use utf8;
 
 use Moo;
-use Data::Util qw(:check);
 use Data::Compare;
 use RDF::NS;
 use RDF::Trine;
@@ -165,7 +164,7 @@ sub _find_variable_bindings {
 sub _find_variable_bindings_ {
     my ($self,$bgps) = @_;
 
-    return (undef, undef) unless is_array_ref($bgps) && @$bgps > 0;
+    return (undef, undef) unless _is_array_ref($bgps) && @$bgps > 0;
 
     my ($pattern,$rest) = $self->_find_best_pattern($bgps);
 
@@ -203,7 +202,7 @@ sub _find_variable_bindings_ {
 sub _apply_binding {
     my ($self,$binding,$bgps) = @_;
 
-    return unless is_array_ref($bgps) && @$bgps > 0;
+    return unless _is_array_ref($bgps) && @$bgps > 0;
 
     my $copy = clone $bgps;
     my @new  = ();
@@ -297,7 +296,7 @@ sub _total_triples {
 sub _node_as_string {
     my $self    = shift;
     my $node    = shift;
-    if (is_invocant($node) && $node->isa('RDF::Trine::Node')) {
+    if (_is_blessed($node) && $node->isa('RDF::Trine::Node')) {
         if ($node->isa('RDF::Trine::Node::Variable')) {
             return $node->as_string; # ?foo
         } elsif ($node->isa('RDF::Trine::Node::Literal')) {
@@ -342,12 +341,12 @@ sub get_query_pattern {
 
     my $pattern;
 
-    return undef unless is_hash_ref($info);
+    return undef unless _is_hash_ref($info);
 
     return undef unless $info->{void_uriLookupEndpoint};
 
     for (keys %$info) {
-        next unless is_hash_ref($info->{$_}) && $info->{$_}->{hydra_property};
+        next unless _is_hash_ref($info->{$_}) && $info->{$_}->{hydra_property};
         my $property = join "_" , $self->sn->qname($info->{$_}->{hydra_property});
         my $variable = $info->{$_}->{hydra_variable};
 
@@ -373,15 +372,15 @@ sub get_statements {
     if (@triple == 3) {
         ($subject,$predicate,$object) = @triple;
     }
-    elsif (is_hash_ref($triple[0])) {
+    elsif (_is_hash_ref($triple[0])) {
         $subject   = $triple[0]->{subject};
         $predicate = $triple[0]->{predicate};
         $object    = $triple[0]->{object};
     }
 
-    $subject   = $subject->value if (is_invocant($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
-    $predicate = $predicate->value if (is_invocant($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
-    if (is_invocant($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
+    $subject   = $subject->value if (_is_blessed($subject) && $subject->isa('RDF::Trine::Node') and not $subject->is_variable);
+    $predicate = $predicate->value if (_is_blessed($predicate) && $predicate->isa('RDF::Trine::Node') and not $predicate->is_variable);
+    if (_is_blessed($object) && $object->isa('RDF::Trine::Node') and not $object->is_variable) {
         $object = ($object->isa('RDF::Trine::Node::Literal')) ? $object->as_string : $object->value;
     }
   
@@ -394,9 +393,9 @@ sub get_statements {
         return undef unless defined $pattern;
     
         my %params;
-        $params{ $pattern->{rdf_subject} }   = $subject if is_string($subject);
-        $params{ $pattern->{rdf_predicate} } = $predicate if is_string($predicate);
-        $params{ $pattern->{rdf_object} }    = $object if is_string($object);
+        $params{ $pattern->{rdf_subject} }   = $subject if _is_string($subject);
+        $params{ $pattern->{rdf_predicate} } = $predicate if _is_string($predicate);
+        $params{ $pattern->{rdf_object} }    = $object if _is_string($object);
 
         my $template  = URI::Template->new($pattern->{void_uriLookupEndpoint});
         push @federated , $template->process(%params)->as_string;
@@ -535,7 +534,7 @@ sub _model_metadata {
         }
     }
 
-    my $source = $info->{dct_source}->[0] if is_array_ref($info->{dct_source});
+    my $source = $info->{dct_source}->[0] if _is_array_ref($info->{dct_source});
 
     if ($source) {
         $self->_build_metadata($model, {
@@ -595,6 +594,22 @@ sub _build_metadata {
     }
 
     $info;
+}
+
+sub _is_array_ref {
+    return ref($_[0]) eq 'ARRAY';
+}
+
+sub _is_hash_ref {
+    return ref($_[0]) eq 'HASH';
+}
+
+sub _is_blessed {
+    return ref($_[0]) =~ /\S/;
+}
+
+sub _is_string {
+    return defined($_[0]) && !ref($_[0]) && ref(\$_[0]) ne 'GLOB' && length($_[0]) > 0;
 }
 
 1;

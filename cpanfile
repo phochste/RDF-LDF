@@ -12,7 +12,6 @@ on 'test', sub {
 requires 'Cache::LRU', 0;
 requires 'Clone', 0;
 requires 'Data::Compare', 0;
-requires 'Data::Util', 0;
 requires 'Getopt::Long', 0;
 requires 'HTTP::Message', 0;
 requires 'JSON', 0;

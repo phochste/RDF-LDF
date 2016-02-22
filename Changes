@@ -1,7 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
-
+  - Removing Data::Util dependency
+  
 0.16  2015-12-10 09:38:40 CET
   - Fix missing JSON-LD support bug
   
