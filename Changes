@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.17  2016-02-22 10:36:32 CET
   - Removing Data::Util dependency
   
 0.16  2015-12-10 09:38:40 CET
