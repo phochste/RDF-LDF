@@ -9,7 +9,7 @@ on 'test', sub {
   requires 'Encode', 0;
 };
 
-requires 'Cache::LRU', 0;
+requires 'LWP::UserAgent::CHICaching', 0;
 requires 'Clone', 0;
 requires 'Data::Compare', 0;
 requires 'Getopt::Long', 0;
