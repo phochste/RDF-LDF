@@ -9,13 +9,13 @@ use Test::LWP::UserAgent;
 use Encode;
 use utf8;
 
-RDF::Trine->default_useragent(user_agent());
-
 my $client = RDF::LDF->new(url => [qw(
             http://example.org/A
             http://example.org/C
             http://example.org/B
-            )]);
+            )],
+									ua => user_agent()
+								  );
 
 ok $client , 'got a federated client to http://example.org/A ,  http://example.org/B and  http://example.org/C ... ';
 ok $client->is_fragment_server , 'this server is a ldf server';

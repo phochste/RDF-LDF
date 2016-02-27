@@ -9,9 +9,8 @@ use Test::LWP::UserAgent;
 use Encode;
 use utf8;
 
-RDF::Trine->default_useragent(user_agent());
-
-my $client = RDF::LDF->new(url => 'http://example.org/2014/en?test=1');
+my $client = RDF::LDF->new(url => 'http://example.org/2014/en?test=1', 
+									ua => user_agent());
 
 ok $client , 'got a client to http://example.org/2014/en?test=1';
 ok $client->is_fragment_server , 'this server is a ldf server';
