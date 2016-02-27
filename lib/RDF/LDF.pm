@@ -11,20 +11,16 @@ use RDF::NS;
 use RDF::Trine;
 use RDF::Query;
 use URI::Escape;
-use LWP::UserAgent;
 use HTTP::Request::Common;
 use Log::Any ();
-use Cache::LRU;
 use Clone qw(clone);
 use JSON;
 use URI::Template;
 use RDF::LDF::Error;
+use CHI;
+use LWP::UserAgent::CHICaching;
 
 our $VERSION = '0.17';
-{
-   my $ua   = RDF::Trine->default_useragent;
-   $ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);
-}
 
 has url => (
     is => 'ro' ,
@@ -39,11 +35,12 @@ has sn => (
     }
 );
 
-has lru => (
+has ua => (
     is     => 'ro' ,
     lazy   => 1,
     builder => sub {
-        Cache::LRU->new( size => 100 );
+		 return LWP::UserAgent::CHICaching->new(cache => CHI->new( driver => 'Memory', global => 1 ),
+															 agent => "RDF::LDF/$RDF::LDF::VERSION ");
     }
 );
 
@@ -54,6 +51,7 @@ has log => (
         Log::Any->get_logger(category => ref(shift));
     }
 );
+
 
 # Public method
 sub is_fragment_server {
@@ -444,10 +442,6 @@ sub get_statements {
 sub get_model_and_info {
     my ($self,$url) = @_;
 
-    if (my $cache = $self->lru->get($url)) {
-         return $cache;
-    }
-
     my $model = $self->get_fragment($url);
     my $info  = {};
 
@@ -455,11 +449,7 @@ sub get_model_and_info {
         $info = $self->_model_metadata($model,$url, clean => 1);
     }
 
-    my $fragment = { model => $model , info => $info };
-
-    $self->lru->set($url => $fragment);
-
-    $fragment;
+    return { model => $model , info => $info };
 }
 
 # Fetch a result page from fragment server
@@ -474,10 +464,10 @@ sub get_fragment {
     
     # JSON support in RDF::Trine isn't JSON-LD
     # Set the accept header quality parameter at a minimum for this format
-    RDF::Trine->default_useragent->default_header('Accept','text/turtle;q=1.0,application/turtle;q=1.0,application/x-turtle;q=1.0,application/rdf+xml;q=0.9,text/x-nquads;q=0.9,application/json;q=0.1,application/x-rdf+json;q=0.1');
+    $self->ua->default_header('Accept','text/turtle;q=1.0,application/turtle;q=1.0,application/x-turtle;q=1.0,application/rdf+xml;q=0.9,text/x-nquads;q=0.9,application/json;q=0.1,application/x-rdf+json;q=0.1');
 
     eval {
-        RDF::Trine::Parser->parse_url_into_model($url, $model);
+        RDF::Trine::Parser->parse_url_into_model($url, $model, useragent => $self->ua);
     };
     
     if ($@) {
