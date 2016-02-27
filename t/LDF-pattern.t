@@ -10,7 +10,7 @@ use Encode;
 use utf8;
 
 my $client = RDF::LDF->new(url => 'http://example.org/2014/en?test=1', 
-									ua => Test::LWP::UserAgent->new);
+									ua => user_agent());
 
 ok $client , 'got a client to http://example.org/2014/en?test=1';
 ok $client->is_fragment_server , 'this server is a ldf server';
