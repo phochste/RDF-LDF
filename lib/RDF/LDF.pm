@@ -616,6 +616,13 @@ RDF::LDF - Linked Data Fragments client
     use RDF::Trine::Store::LDF;
     use RDF::Trine::Store;
 
+    # To use a HTTP cache:
+    use LWP::UserAgent::CHICaching;
+    my $cache = CHI->new( driver => 'Memory', global => 1 );
+    my $ua = LWP::UserAgent::CHICaching->new(cache => $cache);
+    RDF::Trine->default_useragent($ua);
+
+
     my $store = RDF::Trine::Store->new_with_config({
             storetype => 'LDF',
             url => $url
