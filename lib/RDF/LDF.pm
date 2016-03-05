@@ -698,6 +698,8 @@ Gregory Todd Williams, C<< greg@evilfunhouse.com >>
 
 Jacob Voss, C<< voss@gbv.de >>
 
+Kjetil Kjernsmo, C<< kjetilk@cpan.org >>
+
 =head1 COPYRIGHT AND LICENSE
 
 This software is copyright (c) 2015 by Patrick Hochstenbach.
