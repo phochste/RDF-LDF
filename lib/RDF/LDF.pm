@@ -11,10 +11,8 @@ use RDF::NS;
 use RDF::Trine;
 use RDF::Query;
 use URI::Escape;
-use LWP::UserAgent;
 use HTTP::Request::Common;
 use Log::Any ();
-use Cache::LRU;
 use Clone qw(clone);
 use JSON;
 use URI::Template;
@@ -36,14 +34,6 @@ has sn => (
     lazy   => 1,
     builder => sub {
         RDF::NS->new->REVERSE;
-    }
-);
-
-has lru => (
-    is     => 'ro' ,
-    lazy   => 1,
-    builder => sub {
-        Cache::LRU->new( size => 100 );
     }
 );
 
@@ -444,10 +434,6 @@ sub get_statements {
 sub get_model_and_info {
     my ($self,$url) = @_;
 
-    if (my $cache = $self->lru->get($url)) {
-         return $cache;
-    }
-
     my $model = $self->get_fragment($url);
     my $info  = {};
 
@@ -455,11 +441,7 @@ sub get_model_and_info {
         $info = $self->_model_metadata($model,$url, clean => 1);
     }
 
-    my $fragment = { model => $model , info => $info };
-
-    $self->lru->set($url => $fragment);
-
-    $fragment;
+    return { model => $model , info => $info };
 }
 
 # Fetch a result page from fragment server
