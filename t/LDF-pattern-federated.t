@@ -144,7 +144,7 @@ END
 END
     if (defined($next)) {
         $FRAGMENT .= <<"END";
-<$url> hydra:nextPage <$next> .
+<$url>hydra:nextPage<$next> .
 END
     }
 
@@ -197,7 +197,10 @@ END
     add_fragment_response($ua, 'http://example.org/A', $birthPlaces, 3);
     add_fragment_response($ua, 'http://example.org/B', $names, 6);
     add_fragment_response($ua, 'http://example.org/C', $names2, 2);
-
+    add_fragment_response($ua, 'http://example.org/A?', $birthPlaces, 3);
+    add_fragment_response($ua, 'http://example.org/B?', $names, 6);
+    add_fragment_response($ua, 'http://example.org/C?', $names2, 2);
+    
     # {A,B,C}: ?s dbpedia-owl:birthPlace ?place
     add_fragment_response($ua, 'http://example.org/A?&subject=%3Fs&predicate=http%3A%2F%2Fdbpedia.org%2Fontology%2FbirthPlace&object=%3Fplace', $birthPlaces, 3);
     add_fragment_response($ua, 'http://example.org/B?&subject=%3Fs&predicate=http%3A%2F%2Fdbpedia.org%2Fontology%2FbirthPlace&object=%3Fplace', "", 0);
