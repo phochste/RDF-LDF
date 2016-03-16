@@ -9,6 +9,7 @@ on 'test', sub {
   requires 'Encode', 0;
 };
 
+requires 'Cache::LRU', 0;
 requires 'Clone', 0;
 requires 'Data::Compare', 0;
 requires 'Getopt::Long', 0;
@@ -24,8 +25,6 @@ requires 'RDF::Trine', 0;
 requires 'Throwable', 0;
 requires 'URI::Escape', 0;
 requires 'URI::Template', 0;
-
-recommends 'LWP::UserAgent::CHICaching', 0;
 
 recommends 'Log::Any', '1.00';
 recommends 'Moo', '1.004006';

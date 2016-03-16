@@ -11,8 +11,10 @@ use RDF::NS;
 use RDF::Trine;
 use RDF::Query;
 use URI::Escape;
+use LWP::UserAgent;
 use HTTP::Request::Common;
 use Log::Any ();
+use Cache::LRU;
 use Clone qw(clone);
 use JSON;
 use URI::Template;
@@ -34,6 +36,14 @@ has sn => (
     lazy   => 1,
     builder => sub {
         RDF::NS->new->REVERSE;
+    }
+);
+
+has lru => (
+    is     => 'ro' ,
+    lazy   => 1,
+    builder => sub {
+        Cache::LRU->new( size => 100 );
     }
 );
 
@@ -434,6 +444,10 @@ sub get_statements {
 sub get_model_and_info {
     my ($self,$url) = @_;
 
+    if (my $cache = $self->lru->get($url)) {
+         return $cache;
+    }
+
     my $model = $self->get_fragment($url);
     my $info  = {};
 
@@ -441,7 +455,11 @@ sub get_model_and_info {
         $info = $self->_model_metadata($model,$url, clean => 1);
     }
 
-    return { model => $model , info => $info };
+    my $fragment = { model => $model , info => $info };
+
+    $self->lru->set($url => $fragment);
+
+    $fragment;
 }
 
 # Fetch a result page from fragment server
@@ -616,13 +634,6 @@ RDF::LDF - Linked Data Fragments client
     use RDF::Trine::Store::LDF;
     use RDF::Trine::Store;
 
-    # To use a HTTP cache:
-    use LWP::UserAgent::CHICaching;
-    my $cache = CHI->new( driver => 'Memory', global => 1 );
-    my $ua = LWP::UserAgent::CHICaching->new(cache => $cache);
-    RDF::Trine->default_useragent($ua);
-
-
     my $store = RDF::Trine::Store->new_with_config({
             storetype => 'LDF',
             url => $url
@@ -697,8 +708,6 @@ Patrick Hochstenbach, C<< patrick.hochstenbach at ugent.be >>
 Gregory Todd Williams, C<< greg@evilfunhouse.com >>
 
 Jacob Voss, C<< voss@gbv.de >>
-
-Kjetil Kjernsmo, C<< kjetilk@cpan.org >>
 
 =head1 COPYRIGHT AND LICENSE
 
