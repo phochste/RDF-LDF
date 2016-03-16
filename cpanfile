@@ -25,7 +25,7 @@ requires 'Throwable', 0;
 requires 'URI::Escape', 0;
 requires 'URI::Template', 0;
 
-recommends 'LWP::UserAgent::CHICaching', 0;
+requires 'LWP::UserAgent::CHICaching', 0;
 
 recommends 'Log::Any', '1.00';
 recommends 'Moo', '1.004006';

@@ -44,11 +44,20 @@ EOF
     exit(1);
 }
 
+init_cache();
+
 if (defined $sparql) {
     process_sparql($sparql);
 }
 else {
     process_fragments($subject,$predicate,$object);
+}
+
+sub init_cache {
+    use LWP::UserAgent::CHICaching;
+    my $cache = CHI->new( driver => 'Memory', global => 1 );
+    my $ua = LWP::UserAgent::CHICaching->new(cache => $cache);
+    RDF::Trine->default_useragent($ua);
 }
 
 sub process_fragments {

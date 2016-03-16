@@ -622,7 +622,6 @@ RDF::LDF - Linked Data Fragments client
     my $ua = LWP::UserAgent::CHICaching->new(cache => $cache);
     RDF::Trine->default_useragent($ua);
 
-
     my $store = RDF::Trine::Store->new_with_config({
             storetype => 'LDF',
             url => $url
