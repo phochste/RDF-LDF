@@ -20,7 +20,7 @@ use JSON;
 use URI::Template;
 use RDF::LDF::Error;
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 {
    my $ua   = RDF::Trine->default_useragent;
    $ua->agent("RDF:::LDF/$RDF::LDF::VERSION " . $ua->_agent);
