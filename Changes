@@ -1,6 +1,7 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+  - Update page predicates to latest Hydra spec which breaks existing LDF clients
 
 0.18  2016-03-16 11:46:48 CET
   - Removing the caching component into a separate module
