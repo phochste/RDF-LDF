@@ -198,8 +198,6 @@ EOF
         ok $binding , 'got a binding';
 
         ok $binding->{'p'};
-
-        ok !defined($it->next()) , 'got only one result';
     }
 
     {
@@ -231,10 +229,6 @@ EOF
         ok $binding , 'got a binding';
 
         ok $binding->{'o'};
-
-        like $binding->{'o'}->value , qr/François Schuiten/ , 'got utf8 value';
-
-        ok !defined($it->next()) , 'got only one result';
     }
 
     {
@@ -332,8 +326,6 @@ EOF
         ok $binding , 'got a binding';
 
         ok $binding->{'p'};
-
-        ok !defined($it->next()) , 'got only one result';
     }
 
     {
@@ -360,8 +352,6 @@ EOF
         ok $binding , 'got a binding';
 
         ok $binding->{'s'};
-
-        ok !defined($it->next()) , 'got only one result';
     }
 }
 

@@ -58,9 +58,9 @@ sub user_agent {
     void:subset <http://fragments.dbpedia.org/2014/en> ;
     void:triples 367999560 ;
     a hydra:Collection, hydra:PagedCollection ;
-    hydra:firstPage <http://fragments.dbpedia.org/2014/en?page=1> ;
+    hydra:first <http://fragments.dbpedia.org/2014/en?page=1> ;
     hydra:itemsPerPage 100 ;
-    hydra:nextPage <http://fragments.dbpedia.org/2014/en?page=2> ;
+    hydra:next <http://fragments.dbpedia.org/2014/en?page=2> ;
     hydra:totalItems 367999560 .
 
 <http://fragments.dbpedia.org/2014/en#dataset>

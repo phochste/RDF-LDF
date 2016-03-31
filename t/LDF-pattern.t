@@ -126,14 +126,14 @@ END
     dc:title "Linked Data Fragment of DBpedia 2014" ;
     void:subset <http://example.org/2014/en?test=1> ;
     a hydra:Collection, hydra:PagedCollection ;
-#    hydra:firstPage <$url> ;
+    hydra:first <$url> ;
     hydra:itemsPerPage 5 ;
     void:triples $total ;
     hydra:totalItems $total .
 END
 	if (defined($next)) {
 		$FRAGMENT .= <<"END";
-<$url> hydra:nextPage <$next> .
+<$url> hydra:next<$next> .
 END
 	}
 	

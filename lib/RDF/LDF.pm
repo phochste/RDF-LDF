@@ -422,7 +422,7 @@ sub get_statements {
                 $model    = $fragment->{model};
                 $info     = $fragment->{info};
 
-                $url      = $info->{hydra_nextPage};
+                $url      = $info->{hydra_next};
                 $iterator = $model->get_statements;
             }
 
