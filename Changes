@@ -2,6 +2,9 @@ Revision history for RDF::LDF
 
 {{$NEXT}}
 
+0.22  2016-05-12 16:24:47 CEST
+  - Fixing stale hydra statements which end up in result set
+  
 0.21  2016-04-04 10:52:38 CEST
   - Better handling of accept headers
   
