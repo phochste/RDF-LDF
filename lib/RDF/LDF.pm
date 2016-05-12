@@ -523,6 +523,7 @@ sub _model_metadata {
         'http://www.w3.org/ns/hydra/core#mapping'  ,
         'http://www.w3.org/ns/hydra/core#template' ,
         'http://www.w3.org/ns/hydra/core#member'   ,
+        'http://www.w3.org/ns/hydra/core#variableRepresentation' ,
     ) {
         $self->_build_metadata($model, {
             predicate => RDF::Trine::Node::Resource->new($predicate)
