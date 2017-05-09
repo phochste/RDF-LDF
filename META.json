@@ -84,7 +84,7 @@
          "web" : "https://github.com/phochste/RDF-LDF"
       }
    },
-   "version" : "0.22",
+   "version" : "0.23",
    "x_contributors" : [
       "Gregory Todd Williams <greg@evilfunhouse.com>",
       "Jakob Vo\u00df <jakob@nichtich.de>",
