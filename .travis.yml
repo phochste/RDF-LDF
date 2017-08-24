@@ -20,3 +20,7 @@ script:
 after_success:
     - cpanm --quiet --notest --skip-satisfied Devel::Cover::Report::Coveralls
     - perl Build.PL && ./Build build && cover -test -report coveralls
+
+notifications:
+  irc: "irc://irc.perl.org/#perlrdf"
+
