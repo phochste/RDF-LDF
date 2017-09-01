@@ -230,7 +230,7 @@ sub _apply_binding {
 #
 #    my ($pattern, $rest) = $self->_find_best_pattern($triples);
 #
-#    $pattern => Pattern in $triples which least ammount of results
+#    $pattern => Pattern in $triples which least amount of results
 #    $rest    => All patterns in $triples except $pattern
 #
 sub _find_best_pattern {
