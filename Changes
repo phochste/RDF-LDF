@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.23_01  2018-05-28 14:59:17 CEST
   - Update to use hydra:template rather than VoID
 
 0.23  2017-05-09 14:35:20 CEST
