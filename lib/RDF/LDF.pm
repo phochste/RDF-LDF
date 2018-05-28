@@ -324,7 +324,7 @@ sub _parse_triple_pattern {
 #   rdf_subject   => <name_of_subject_variable> ,
 #   rdf_predicate => <name_of_predicate_variable> ,
 #   rdf_object    => <name_of_object_variable>
-#   hydra_template => <endpoint_for_tripple_pattern>
+#   void_uriLookupEndpoint => <endpoint_for_tripple_pattern>
 # }
 sub get_query_pattern {
     my ($self,$url) = @_;
@@ -339,7 +339,7 @@ sub get_query_pattern {
 
     return undef unless _is_hash_ref($info);
 
-    return undef unless $info->{hydra_template};
+    return undef unless $info->{void_uriLookupEndpoint};
 
     for (keys %$info) {
         next unless _is_hash_ref($info->{$_}) && $info->{$_}->{hydra_property};
@@ -353,7 +353,7 @@ sub get_query_pattern {
     return undef unless $pattern->{rdf_predicate};
     return undef unless $pattern->{rdf_object};
 
-    $pattern->{hydra_template} = $info->{hydra_template};
+    $pattern->{void_uriLookupEndpoint} = $info->{void_uriLookupEndpoint};
 
     $pattern;
 }
@@ -393,7 +393,7 @@ sub get_statements {
         $params{ $pattern->{rdf_predicate} } = $predicate if _is_string($predicate);
         $params{ $pattern->{rdf_object} }    = $object if _is_string($object);
 
-        my $template  = URI::Template->new($pattern->{hydra_template});
+        my $template  = URI::Template->new($pattern->{void_uriLookupEndpoint});
         push @federated , $template->process(%params)->as_string;
     }
 
