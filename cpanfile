@@ -18,7 +18,7 @@ requires 'JSON', 0;
 requires 'Log::Any', 0;
 requires 'Moo', 0;
 
-requires 'RDF::NS', '20150725';
+requires 'RDF::NS::Curated', '1.0';
 
 requires 'RDF::Query', 0;
 requires 'RDF::Trine', 0;
