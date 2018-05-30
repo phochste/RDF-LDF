@@ -7,7 +7,7 @@ use utf8;
 
 use Moo;
 use Data::Compare;
-use RDF::NS;
+use RDF::NS::Curated;
 use RDF::Trine;
 use RDF::Query;
 use URI::Escape;
@@ -27,11 +27,11 @@ has url => (
     required => 1
 );
 
-has sn => (
+has ns => (
     is     => 'ro' ,
     lazy   => 1,
     builder => sub {
-        RDF::NS->new->REVERSE;
+        RDF::NS::Curated->new;
     }
 );
 
@@ -343,7 +343,7 @@ sub get_query_pattern {
 
     for (keys %$info) {
         next unless _is_hash_ref($info->{$_}) && $info->{$_}->{hydra_property};
-        my $property = join "_" , $self->sn->qname($info->{$_}->{hydra_property});
+        my $property = join "_" , $self->ns->qname($info->{$_}->{hydra_property});
         my $variable = $info->{$_}->{hydra_variable};
 
         $pattern->{$property} = $variable;
@@ -573,7 +573,7 @@ sub _build_metadata {
         my $predicate = $triple->predicate->uri_value;
         my $object    = $triple->object->value;
 
-        my $qname = join "_" , $self->sn->qname($predicate);
+        my $qname = join "_" , $self->ns->qname($predicate);
 
         if ($qname =~ /^(hydra_variable|hydra_property)$/) {
             my $id= $triple->subject->value;
