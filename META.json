@@ -72,7 +72,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/phochste/RDF-LDF/issues"
@@ -84,7 +84,7 @@
          "web" : "https://github.com/phochste/RDF-LDF"
       }
    },
-   "version" : "0.23_01",
+   "version" : "0.24",
    "x_contributors" : [
       "Edward Betts <edward@4angle.com>",
       "Gregory Todd Williams <greg@evilfunhouse.com>",
