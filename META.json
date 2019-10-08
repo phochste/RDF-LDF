@@ -85,7 +85,7 @@
          "web" : "https://github.com/phochste/RDF-LDF"
       }
    },
-   "version" : "0.24",
+   "version" : "0.25",
    "x_contributors" : [
       "Edward Betts <edward@4angle.com>",
       "Gregory Todd Williams <greg@evilfunhouse.com>",

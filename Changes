@@ -1,6 +1,8 @@
 Revision history for RDF::LDF
 
 {{$NEXT}}
+
+0.25  2019-10-08 10:06:15 CEST
   - Adding missing dependencies [manwar]
   
 0.24  2018-05-30 13:00:57 CEST
