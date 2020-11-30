@@ -47,7 +47,7 @@ RDF::LDF - Linked Data Fragments client
 RDF::LDF implements a basic [Linked Data Fragment](http://linkeddatafragments.org/) client.
 
 This a low level module to implement the Linked Data Fragment protocol. You probably want to
-use [RDF::Trine::Store::LDF](https://metacpan.org/pod/RDF::Trine::Store::LDF).
+use [RDF::Trine::Store::LDF](https://metacpan.org/pod/RDF%3A%3ATrine%3A%3AStore%3A%3ALDF).
 
 # CONFIGURATION
 
