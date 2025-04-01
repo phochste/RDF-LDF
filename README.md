@@ -1,3 +1,5 @@
+We migrated to https://codeberg.org/phochste/RDF-LDF
+
 # NAME
 
 RDF::LDF - Linked Data Fragments client
